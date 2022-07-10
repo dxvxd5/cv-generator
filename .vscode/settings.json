@@ -6,5 +6,14 @@
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
         },
-    }
+    },
+    "cSpell.words": [
+        "datedsubsection",
+        "ESISAR"
+    ],
+    "python.testing.pytestArgs": [
+        "src"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }

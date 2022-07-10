@@ -1,0 +1,9 @@
+version: 0.1
+cli:
+  version: 0.14.1-beta
+lint:
+  enabled:
+    - black@22.6.0
+    - flake8@4.0.1
+    - gitleaks@8.8.11
+    - isort@5.10.1
