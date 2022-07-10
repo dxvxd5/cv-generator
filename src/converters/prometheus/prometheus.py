@@ -1,4 +1,4 @@
-from section.education import Education
+from sections.education import Education
 from utils.latex import Latex
 
 
@@ -30,7 +30,3 @@ class PrometheusConverter:
         ]
 
         return PrometheusConverter.build_datedsubsection_cmd(args)
-
-
-if __name__ == "__main__":
-    PrometheusConverter.convert_education()
