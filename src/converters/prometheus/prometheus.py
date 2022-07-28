@@ -1,9 +1,10 @@
 from sections.education import Education
+from sections.experience import Experience
 from sections.project import Project
 from sections.skill import Skill
 from utils.latex import Latex
 
-from .utils import to_location, to_period, to_school_with_location
+from .utils import to_location, to_period, to_with_location
 
 
 class PrometheusConverter:
@@ -24,7 +25,7 @@ class PrometheusConverter:
         """
         period = to_period(education.start_date, education.end_date)
         location = to_location(education.city, education.country)
-        school = to_school_with_location(education.school, location)
+        school = to_with_location(education.school, location)
         description = Latex.build_itemize_block(education.description)
         degree = Latex.bold(education.degree)
 
@@ -57,4 +58,22 @@ class PrometheusConverter:
 
         return PrometheusConverter.build_datedsubsection_cmd(
             [period, location, project.context, title, description]
+        )
+
+    def convert_experience(experience: Experience):
+        """
+        Convert the experience object to Latex
+        """
+        description = Latex.build_itemize_block(experience.description)
+        period = to_period(experience.start_date, experience.end_date)
+        location = to_location(experience.city, experience.country)
+        company = (
+            experience.company_link
+            and Latex.link(experience.company_link, experience.company_name)
+            or experience.company_name
+        )
+        company = to_with_location(company, location)
+
+        return PrometheusConverter.build_datedsubsection_cmd(
+            [period, location, company, experience.title, description]
         )

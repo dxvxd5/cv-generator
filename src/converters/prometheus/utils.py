@@ -6,5 +6,5 @@ def to_location(city: str, country: str):
     return f"{city}, {country}"
 
 
-def to_school_with_location(school: str, location: str):
-    return f"{school} - {location}"
+def to_with_location(label: str, location: str):
+    return f"{label} - {location}"
