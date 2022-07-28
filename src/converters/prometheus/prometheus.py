@@ -1,4 +1,5 @@
 from sections.education import Education
+from sections.skill import Skill
 from utils.latex import Latex
 
 
@@ -10,6 +11,9 @@ class PrometheusConverter:
 
     def build_datedsubsection_cmd(args):
         return Latex.build_command("datedsubsection", args)
+
+    def build_undatedsubsection_cmd(args):
+        return Latex.build_command("undatedsubsection", args)
 
     def convert_education(education: Education) -> str:
         """
@@ -30,3 +34,9 @@ class PrometheusConverter:
         ]
 
         return PrometheusConverter.build_datedsubsection_cmd(args)
+
+    def convert_skill(skill: Skill) -> str:
+        """
+        Convert the skill object to Latex
+        """
+        return f"{Latex.bold(skill.area + ': ' )}{Latex.to_dot_separated_items(skill.skills)}"
