@@ -42,7 +42,13 @@ def test_bold(text, bold_text):
 
 
 @pytest.mark.parametrize(
-    "arguments, latex_arguments", [([], ""), (["arg1"], "{arg1}\n"), (["", ""], "")]
+    "arguments, latex_arguments",
+    [
+        ([], ""),
+        (["arg1"], "{arg1}"),
+        (["", ""], ""),
+        (["arg1", "arg2"], "{arg1}\n{arg2}"),
+    ],
 )
 def test_to_command_args(arguments, latex_arguments):
     assert Latex.to_command_args(arguments) == latex_arguments
@@ -51,5 +57,19 @@ def test_to_command_args(arguments, latex_arguments):
 def test_build_command():
     command = "command"
     arguments = ["arg1", "", "arg2", ""]
-    latex_command = "\\command\n{arg1}\n{arg2}\n"
+    latex_command = "\\command\n{arg1}\n{arg2}"
     assert Latex.build_command(command, arguments) == latex_command
+
+
+def test_to_dot_separated_items():
+    items = ["item1", "", "item2", ""]
+    latex_items = "item1 $ \\cdot $ item2"
+    assert Latex.to_dot_separated_items(items) == latex_items
+
+
+@pytest.mark.parametrize(
+    "items, dot_separated_items",
+    [(["item1", "", "item2", ""], "item1 $ \\cdot $ item2"), ([], ""), (["", ""], "")],
+)
+def test_to_dot_separated_items2(items, dot_separated_items):
+    assert Latex.to_dot_separated_items(items) == dot_separated_items

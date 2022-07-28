@@ -17,6 +17,9 @@ class Latex:
     def to_itemize(items: List[str]):
         return "\n".join([Latex.item(item) for item in items if item])
 
+    def to_dot_separated_items(items: List[str]):
+        return " $ \\cdot $ ".join([item for item in items if item])
+
     def build_itemize_block(items: List[str]):
         return (
             f"{Latex.begin('itemize')}\n"
@@ -25,10 +28,7 @@ class Latex:
         )
 
     def to_command_args(arguments: List[str]):
-        args = ""
-        for argument in arguments:
-            args += argument and f"{{{argument}}}\n"
-        return args
+        return "\n".join([f"{{{arg}}}" for arg in arguments if arg])
 
     def build_command(command: str, arguments: List[str]):
         args = Latex.to_command_args(arguments)
