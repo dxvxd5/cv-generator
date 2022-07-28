@@ -73,3 +73,19 @@ def test_to_dot_separated_items():
 )
 def test_to_dot_separated_items2(items, dot_separated_items):
     assert Latex.to_dot_separated_items(items) == dot_separated_items
+
+
+def test_link():
+    url = "http://example.com/link"
+    title = "Link to example.com"
+    assert (
+        Latex.link(url, title) == "\\href{http://example.com/link}{Link to example.com}"
+    )
+
+
+@pytest.mark.parametrize(
+    "url, title", [("", "title"), ("http://example.com", ""), ("", "")]
+)
+def test_link_with_empty_params(url, title):
+    with pytest.raises(ValueError):
+        Latex.link(url, title)

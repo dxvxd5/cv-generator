@@ -33,3 +33,10 @@ class Latex:
     def build_command(command: str, arguments: List[str]):
         args = Latex.to_command_args(arguments)
         return f"\\{command}\n{args}"
+
+    def link(url: str, title: str):
+
+        if not (url and title):
+            raise ValueError("Must provide url and title for link")
+
+        return f"\\href{{{url}}}{{{title}}}"

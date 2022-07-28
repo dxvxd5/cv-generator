@@ -476,3 +476,4 @@ cython_debug/
 
 # Project specific
 output
+*.tex
