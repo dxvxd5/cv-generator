@@ -46,7 +46,7 @@ def test_bold(text, bold_text):
     [
         ([], ""),
         (["arg1"], "{arg1}"),
-        (["", ""], ""),
+        (["", ""], "{}\n{}"),
         (["arg1", "arg2"], "{arg1}\n{arg2}"),
     ],
 )
@@ -57,7 +57,7 @@ def test_to_command_args(arguments, latex_arguments):
 def test_build_command():
     command = "command"
     arguments = ["arg1", "", "arg2", ""]
-    latex_command = "\\command\n{arg1}\n{arg2}"
+    latex_command = "\\command\n{arg1}\n{}\n{arg2}\n{}"
     assert Latex.build_command(command, arguments) == latex_command
 
 
