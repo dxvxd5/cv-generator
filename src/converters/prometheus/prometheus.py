@@ -43,7 +43,10 @@ class PrometheusConverter:
         """
         Convert the skill object to Latex
         """
-        return f"{Latex.bold(skill.area + ': ' )}{Latex.to_dot_separated_items(skill.skills)}"
+        return (
+            f"{Latex.bold(skill.area + ': ' )}"
+            f"{Latex.to_dot_separated_items(skill.skills)}"
+        )
 
     def convert_project(project: Project):
         """

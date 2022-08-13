@@ -17,7 +17,12 @@ def test_convert_education():
     )
 
     built_latex = PrometheusConverter.convert_education(education)
-    expected_latex = "\\datedsubsection\n{2020 - 2022}\n{Stockholm, Sweden}\n{KTH - Stockholm, Sweden}\n{\\textbf{Master}}\n{\\begin{itemize}\n\\item ML\n\\end{itemize}}"
+    expected_latex = (
+        "\\datedsubsection\n{2020 - 2022}\n{Stockholm, Sweden}\n"
+        "{KTH - Stockholm, Sweden}"
+        "\n{\\textbf{Master}}\n{\\begin{itemize}\n"
+        "\\item ML\n\\end{itemize}}"
+    )
 
     assert built_latex == expected_latex
 
@@ -42,7 +47,12 @@ def test_convert_project_with_link():
         link="awesome-project.com",
     )
 
-    expected_latex = "\\datedsubsection\n{2020 - 2022}\n{Stockholm, Sweden}\n{Project done at KTH}\n{\href{awesome-project.com}{Project}}\n{\\begin{itemize}\n\\item Super project\n\\item It was very cool\n\\end{itemize}}"
+    expected_latex = (
+        "\\datedsubsection\n{2020 - 2022}\n{Stockholm, Sweden}\n"
+        "{Project done at KTH}\n{\\href{awesome-project.com}{Project}}\n"
+        "{\\begin{itemize}\n\\item Super project\n"
+        "\\item It was very cool\n\\end{itemize}}"
+    )
 
     assert PrometheusConverter.convert_project(project) == expected_latex
 
@@ -59,7 +69,11 @@ def test_convert_project_without_link():
         link="",
     )
 
-    expected_latex = "\\datedsubsection\n{2020 - 2022}\n{Stockholm, Sweden}\n{Project done at KTH}\n{Project}\n{\\begin{itemize}\n\\item Super project\n\\item It was very cool\n\\end{itemize}}"
+    expected_latex = (
+        "\\datedsubsection\n{2020 - 2022}\n{Stockholm, Sweden}\n"
+        "{Project done at KTH}\n{Project}\n{\\begin{itemize}\n\\item Super project\n"
+        "\\item It was very cool\n\\end{itemize}}"
+    )
 
     assert PrometheusConverter.convert_project(project) == expected_latex
 
@@ -76,7 +90,11 @@ def test_convert_experience():
         description=["Super project", "It was very cool"],
     )
 
-    expected_latex = "\\datedsubsection\n{2020 - 2022}\n{Stockholm, Sweden}\n{\\href{www.kth.se}{KTH} - Stockholm, Sweden}\n{Student}\n{\\begin{itemize}\n\\item Super project\n\\item It was very cool\n\\end{itemize}}"
+    expected_latex = (
+        "\\datedsubsection\n{2020 - 2022}\n{Stockholm, Sweden}\n"
+        "{\\href{www.kth.se}{KTH} - Stockholm, Sweden}\n{Student}\n{\\begin{itemize}\n"
+        "\\item Super project\n\\item It was very cool\n\\end{itemize}}"
+    )
 
     assert PrometheusConverter.convert_experience(experience) == expected_latex
 
@@ -93,6 +111,11 @@ def test_convert_experience_without_link():
         description=["Super project", "It was very cool"],
     )
 
-    expected_latex = "\\datedsubsection\n{2020 - 2022}\n{Stockholm, Sweden}\n{KTH - Stockholm, Sweden}\n{Student}\n{\\begin{itemize}\n\\item Super project\n\\item It was very cool\n\\end{itemize}}"
+    expected_latex = (
+        "\\datedsubsection\n{2020 - 2022}\n{Stockholm, Sweden}\n"
+        "{KTH - Stockholm, Sweden}"
+        "\n{Student}\n{\\begin{itemize}\n"
+        "\\item Super project\n\\item It was very cool\n\\end{itemize}}"
+    )
 
     assert PrometheusConverter.convert_experience(experience) == expected_latex
