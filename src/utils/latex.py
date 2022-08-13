@@ -28,7 +28,7 @@ class Latex:
         )
 
     def to_command_args(arguments: List[str]):
-        return "\n".join([f"{{{arg}}}" for arg in arguments if arg])
+        return "\n".join([f"{{{arg}}}" for arg in arguments])
 
     def build_command(command: str, arguments: List[str]):
         args = Latex.to_command_args(arguments)
