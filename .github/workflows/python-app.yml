@@ -29,8 +29,5 @@ jobs:
     - name: Lint with Trunk
       uses: trunk-io/trunk-action@v1
 
-    - name: Activate poetry virtual environment
-      run: poetry shell
-
     - name: Test with pytest
-      run: pytest
+      run: poetry run pytest
