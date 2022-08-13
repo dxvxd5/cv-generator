@@ -35,7 +35,7 @@ def expected_education_fields():
         "country",
         "school",
         "degree",
-        "description ",
+        "description",
     ]
 
 
