@@ -35,7 +35,7 @@ def test_convert_skill():
     assert built_latex == expected_latex
 
 
-def test_convert_skills_with_empty_skills():
+def test_convert_skills():
     skill1 = Skill(area="Other technologies", skills=["Python", "Java", "C#", "Latex"])
     skill2 = Skill(area="Tools", skills=["Git", "ESLint", "Prettier", "Figma"])
     built_latex = PrometheusConverter.convert_skills([skill1, skill2])
