@@ -1,5 +1,6 @@
-from utils.json import check_dict
 import pytest
+
+from utils.json import check_dict
 
 
 @pytest.fixture
@@ -34,7 +35,7 @@ def expected_education_fields():
         "country",
         "school",
         "degree",
-        "description",
+        "description ",
     ]
 
 
