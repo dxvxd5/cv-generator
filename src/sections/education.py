@@ -1,5 +1,6 @@
-from utils.json import check_dict
 from typing import List
+
+from utils.json import check_dict
 
 
 class Education:
