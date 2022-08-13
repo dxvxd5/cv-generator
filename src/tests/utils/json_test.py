@@ -1,6 +1,5 @@
-import pytest
-
 from utils.json import check_dict
+import pytest
 
 
 @pytest.fixture
