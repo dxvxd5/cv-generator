@@ -35,6 +35,19 @@ def test_convert_skill():
     assert built_latex == expected_latex
 
 
+def test_convert_skills_with_empty_skills():
+    skill1 = Skill(area="Other technologies", skills=["Python", "Java", "C#", "Latex"])
+    skill2 = Skill(area="Tools", skills=["Git", "ESLint", "Prettier", "Figma"])
+    built_latex = PrometheusConverter.convert_skills([skill1, skill2])
+    expected_latex = (
+        "\\undatedsubsection\n{}\n{Skills}\n{\\textbf{Other technologies: }"
+        "Python $ \\cdot $ Java $ \\cdot $ C# $ \\cdot $ Latex\\\\\n\\textbf"
+        "{Tools: }Git $ \\cdot $ ESLint $ \\cdot $ Prettier $ \\cdot $ Figma}"
+    )
+
+    assert built_latex == expected_latex
+
+
 def test_convert_project_with_link():
     project = Project(
         startDate=2020,
