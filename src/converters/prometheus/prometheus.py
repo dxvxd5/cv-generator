@@ -13,10 +13,10 @@ class PrometheusConverter:
     latex files for the different cv sections
     """
 
-    def build_datedsubsection_cmd(args):
+    def build_datedsubsection_cmd(*args):
         return Latex.build_command("datedsubsection", args)
 
-    def build_undatedsubsection_cmd(args):
+    def build_undatedsubsection_cmd(*args):
         return Latex.build_command("undatedsubsection", args)
 
     def convert_education(education: Education) -> str:
@@ -29,21 +29,22 @@ class PrometheusConverter:
         description = Latex.build_itemize_block(education.description)
         degree = Latex.bold(education.degree)
 
-        args = [
+        return PrometheusConverter.build_datedsubsection_cmd(
             period,
             location,
             school,
             degree,
             description,
-        ]
-
-        return PrometheusConverter.build_datedsubsection_cmd(args)
+        )
 
     def convert_skill(skill: Skill) -> str:
         """
         Convert the skill object to Latex
         """
-        return f"{Latex.bold(skill.area + ': ' )}{Latex.to_dot_separated_items(skill.skills)}"
+        return (
+            f"{Latex.bold(skill.area + ': ' )}"
+            f"{Latex.to_dot_separated_items(skill.skills)}"
+        )
 
     def convert_project(project: Project):
         """
@@ -57,7 +58,7 @@ class PrometheusConverter:
         )
 
         return PrometheusConverter.build_datedsubsection_cmd(
-            [period, location, project.context, title, description]
+            period, location, project.context, title, description
         )
 
     def convert_experience(experience: Experience):
@@ -75,5 +76,5 @@ class PrometheusConverter:
         company = to_with_location(company, location)
 
         return PrometheusConverter.build_datedsubsection_cmd(
-            [period, location, company, experience.title, description]
+            period, location, company, experience.title, description
         )
