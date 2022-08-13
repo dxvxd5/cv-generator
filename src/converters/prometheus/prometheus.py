@@ -46,6 +46,13 @@ class PrometheusConverter:
             f"{Latex.to_dot_separated_items(skill.skills)}"
         )
 
+    def convert_skills(skills: list[Skill]) -> str:
+        return PrometheusConverter.build_undatedsubsection_cmd(
+            "",
+            "Skills",
+            "\\\\\n".join(map(PrometheusConverter.convert_skill, skills)),
+        )
+
     def convert_project(project: Project):
         """
         Convert the project object to Latex
