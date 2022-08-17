@@ -1,7 +1,13 @@
+import os
+import tempfile
+from distutils import dir_util, file_util
+
+from sections.cv import CV
 from sections.education import Education
 from sections.experience import Experience
 from sections.project import Project
 from sections.skill import Skill
+from utils.converters import convert_several
 from utils.latex import Latex
 
 from .utils import to_location, to_period, to_with_location
@@ -12,6 +18,8 @@ class PrometheusConverter:
     Latex converter using the Prometheus latex template to generate
     latex files for the different cv sections
     """
+
+    MAIN_TEX_FILE = "main.tex"
 
     def build_datedsubsection_cmd(*args):
         return Latex.build_command("datedsubsection", args)
@@ -85,3 +93,56 @@ class PrometheusConverter:
         return PrometheusConverter.build_datedsubsection_cmd(
             period, location, company, experience.title, description
         )
+
+    def get_templates_location():
+        return os.path.join(os.path.dirname(os.path.realpath(__file__)), "templates")
+
+    def copy_template_files(output_folder: str):
+        """
+        Copy the template files to the output folder
+        """
+        dir_util.copy_tree(PrometheusConverter.get_templates_location(), output_folder)
+
+    def create_latex_files(cv: CV, output_folder: str):
+
+        # Maps the name of the files to create to their content
+        files_to_create = {
+            "education": convert_several(
+                PrometheusConverter.convert_education, cv.education
+            ),
+            "experiences": convert_several(
+                PrometheusConverter.convert_experience, cv.experiences
+            ),
+            "projects": convert_several(
+                PrometheusConverter.convert_project, cv.projects
+            ),
+            "skills": PrometheusConverter.convert_skills(cv.skills),
+        }
+
+        for file_name, file_content in files_to_create.items():
+            file_path = os.path.join(output_folder, f"{file_name}.tex")
+            with open(file_path, "w") as f:
+                f.write(file_content)
+
+    def convert_cv_to_pdf(cv: CV, output_file: str):
+        """
+        Convert the cv object to a pdf file
+        """
+
+        tmpdir_path = tempfile.mkdtemp()
+        prev_umask = os.umask(0o077)
+
+        try:
+            PrometheusConverter.create_latex_files(cv, tmpdir_path)
+            PrometheusConverter.copy_template_files(tmpdir_path)
+            pdf_file = Latex.compile_file(
+                os.path.join(tmpdir_path, PrometheusConverter.MAIN_TEX_FILE)
+            )
+
+        except IOError as e:
+            raise e
+        else:
+            file_util.copy_file(pdf_file, output_file)
+        finally:
+            os.umask(prev_umask)
+            dir_util.remove_tree(tmpdir_path)
