@@ -1,3 +1,4 @@
+import os
 from typing import List
 
 
@@ -40,3 +41,13 @@ class Latex:
             raise ValueError("Must provide url and title for link")
 
         return f"\\href{{{url}}}{{{title}}}"
+
+    def compile_file(filepath: str):
+        path_sans_extension, extension = os.path.splitext(filepath)
+
+        if not extension == ".tex":
+            raise ValueError("Must provide a .tex file")
+
+        os.system(f"latexmk -pdflua -cd -file-line-error {filepath}")
+
+        return f"{path_sans_extension}.pdf"

@@ -13,7 +13,17 @@ class CV:
 
     def __init__(self, **kwargs):
         check_dict(self.expected_fields, kwargs)
-        self.education: List[Education] = kwargs["education"]
-        self.experiences: List[Experience] = kwargs["experiences"]
-        self.skills: List[Skill] = kwargs["skills"]
-        self.projects: List[Project] = kwargs["projects"]
+
+        self.education: List[Education] = [
+            Education(**edu) for edu in kwargs["education"]
+        ]
+
+        self.experiences: List[Experience] = [
+            Experience(**experience) for experience in kwargs["experiences"]
+        ]
+
+        self.skills: List[Skill] = [Skill(**skill) for skill in kwargs["skills"]]
+
+        self.projects: List[Project] = [
+            Project(**project) for project in kwargs["projects"]
+        ]
