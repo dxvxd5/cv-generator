@@ -1,5 +1,4 @@
 import os
-import subprocess
 from distutils import dir_util
 
 from sections.cv import CV

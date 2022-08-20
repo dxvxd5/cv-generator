@@ -3,6 +3,7 @@ import os
 import tempfile
 from distutils import dir_util, file_util
 from io import TextIOWrapper
+from subprocess import CalledProcessError
 
 import click
 
@@ -62,7 +63,10 @@ def main(input: TextIOWrapper, output: str, template: str):
         info("Compiling the generated files to pdf")
         pdf_file = Latex.compile_file(main_latex_file)
 
-    except:
+    except CalledProcessError:
+        error("The Latex compilation failed, please try again")
+
+    except IOError:
         error("Something went wrong, please try again.")
 
     else:
