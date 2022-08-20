@@ -1,6 +1,5 @@
 import os
-import tempfile
-from distutils import dir_util, file_util
+from distutils import dir_util
 
 from sections.cv import CV
 from sections.education import Education
@@ -124,25 +123,11 @@ class PrometheusConverter:
             with open(file_path, "w") as f:
                 f.write(file_content)
 
-    def convert_cv_to_pdf(cv: CV, output_file: str):
+    def generate_latex_files(cv: CV, output_folder: str):
         """
-        Convert the cv object to a pdf file
+        Generate the latex files for the cv
         """
+        PrometheusConverter.create_latex_files(cv, output_folder)
+        PrometheusConverter.copy_template_files(output_folder)
 
-        tmpdir_path = tempfile.mkdtemp()
-        prev_umask = os.umask(0o077)
-
-        try:
-            PrometheusConverter.create_latex_files(cv, tmpdir_path)
-            PrometheusConverter.copy_template_files(tmpdir_path)
-            pdf_file = Latex.compile_file(
-                os.path.join(tmpdir_path, PrometheusConverter.MAIN_TEX_FILE)
-            )
-
-        except IOError as e:
-            raise e
-        else:
-            file_util.copy_file(pdf_file, output_file)
-        finally:
-            os.umask(prev_umask)
-            dir_util.remove_tree(tmpdir_path)
+        return os.path.join(output_folder, PrometheusConverter.MAIN_TEX_FILE)
