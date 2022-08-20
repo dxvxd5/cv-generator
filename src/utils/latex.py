@@ -1,4 +1,5 @@
-import os
+import subprocess
+from os.path import splitext
 from typing import List
 
 
@@ -43,11 +44,16 @@ class Latex:
         return f"\\href{{{url}}}{{{title}}}"
 
     def compile_file(filepath: str):
-        path_sans_extension, extension = os.path.splitext(filepath)
+        path_sans_extension, extension = splitext(filepath)
 
         if not extension == ".tex":
             raise ValueError("Must provide a .tex file")
 
-        os.system(f"latexmk -pdflua -cd -file-line-error {filepath}")
+        subprocess.run(
+            ["latexmk", "-pdflua", "-cd", "-file-line-error", filepath],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=True,
+        )
 
         return f"{path_sans_extension}.pdf"
