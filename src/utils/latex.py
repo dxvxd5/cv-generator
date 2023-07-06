@@ -46,7 +46,7 @@ class Latex:
     def compile_file(filepath: str):
         path_sans_extension, extension = splitext(filepath)
 
-        if not extension == ".tex":
+        if extension != ".tex":
             raise ValueError("Must provide a .tex file")
 
         subprocess.run(
