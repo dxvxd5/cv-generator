@@ -63,8 +63,10 @@ def main(input: TextIOWrapper, output: str, template: str):
         info("Compiling the generated files to pdf")
         pdf_file = Latex.compile_file(main_latex_file)
 
-    except CalledProcessError:
+    except CalledProcessError as e:
         error("The Latex compilation failed, please try again")
+        if e.stderr:
+            error(e.stderr)
 
     except IOError:
         error("Something went wrong, please try again.")
