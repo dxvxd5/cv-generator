@@ -66,8 +66,8 @@ def main(input: TextIOWrapper, output: str, template: str):
     except CalledProcessError:
         error("The Latex compilation failed, please try again")
 
-    except IOError:
-        error("Something went wrong, please try again.")
+    except IOError as e:
+        error(f"IO error: {e}")
 
     else:
         success("Compilation succeeded")
