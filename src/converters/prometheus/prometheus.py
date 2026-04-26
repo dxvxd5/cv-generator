@@ -1,5 +1,5 @@
 import os
-from distutils import dir_util
+import shutil
 
 from sections.cv import CV
 from sections.education import Education
@@ -100,7 +100,11 @@ class PrometheusConverter:
         """
         Copy the template files to the output folder
         """
-        dir_util.copy_tree(PrometheusConverter.get_templates_location(), output_folder)
+        shutil.copytree(
+            PrometheusConverter.get_templates_location(),
+            output_folder,
+            dirs_exist_ok=True,
+        )
 
     def create_latex_files(cv: CV, output_folder: str):
 
