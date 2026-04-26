@@ -37,8 +37,6 @@ def main(input: TextIOWrapper, output: str, template: str):
     Convert <json cv> to pdf through Latex
     """
 
-    failure = True
-
     info("Reading input file")
     converter = get_converter(template)
     cv = CV(**json.load(input))
@@ -75,7 +73,10 @@ def main(input: TextIOWrapper, output: str, template: str):
         info(f"Copying compiled pdf file {pdf_file} to {output_file}")
         shutil.copy2(pdf_file, output_file)
         success("File copied")
-        failure = False
+
+        print()
+        success(f"The conversion succeeded. Your CV was outputted at {output_file}")
+        return
 
     finally:
         info(f"Cleaning up temporary folder {tmpdir_path}")
@@ -84,11 +85,7 @@ def main(input: TextIOWrapper, output: str, template: str):
         success("Folder cleaned up")
 
     print()
-
-    if failure:
-        error("The conversion failed. Please try again.")
-    else:
-        success(f"The conversion succeeded. Your CV was outputted at {output_file}")
+    error("The conversion failed. Please try again.")
 
 
 if __name__ == "__main__":
