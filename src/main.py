@@ -68,8 +68,8 @@ def main(input: TextIOWrapper, output: str, template: str):
         if e.stderr:
             error(e.stderr)
 
-    except IOError:
-        error("Something went wrong, please try again.")
+    except IOError as e:
+        error(f"IO error: {e}")
 
     else:
         success("Compilation succeeded")
