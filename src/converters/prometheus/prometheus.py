@@ -17,6 +17,7 @@ class PrometheusConverter:
     """
 
     MAIN_TEX_FILE = "main.tex"
+    NO_PERIOD = ""
 
     @staticmethod
     def build_datedsubsection_cmd(*args) -> str:
@@ -56,7 +57,7 @@ class PrometheusConverter:
     @staticmethod
     def convert_skills(skills: list[Skill]) -> str:
         return PrometheusConverter.build_undatedsubsection_cmd(
-            "",
+            PrometheusConverter.NO_PERIOD,
             "Skills",
             "\\\\\n".join(map(PrometheusConverter.convert_skill, skills)),
         )
