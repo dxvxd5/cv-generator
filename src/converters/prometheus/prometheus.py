@@ -21,11 +21,11 @@ class PrometheusConverter:
     MAIN_TEX_FILE = "main.tex"
 
     @staticmethod
-    def build_datedsubsection_cmd(*args):
+    def build_datedsubsection_cmd(*args) -> str:
         return Latex.build_command("datedsubsection", args)
 
     @staticmethod
-    def build_undatedsubsection_cmd(*args):
+    def build_undatedsubsection_cmd(*args) -> str:
         return Latex.build_command("undatedsubsection", args)
 
     @staticmethod
@@ -66,7 +66,7 @@ class PrometheusConverter:
         )
 
     @staticmethod
-    def convert_project(project: Project):
+    def convert_project(project: Project) -> str:
         """
         Convert the project object to Latex
         """
@@ -82,7 +82,7 @@ class PrometheusConverter:
         )
 
     @staticmethod
-    def convert_experience(experience: Experience):
+    def convert_experience(experience: Experience) -> str:
         """
         Convert the experience object to Latex
         """
@@ -101,11 +101,11 @@ class PrometheusConverter:
         )
 
     @staticmethod
-    def get_templates_location():
+    def get_templates_location() -> str:
         return os.path.join(os.path.dirname(os.path.realpath(__file__)), "templates")
 
     @staticmethod
-    def copy_template_files(output_folder: str):
+    def copy_template_files(output_folder: str) -> None:
         """
         Copy the template files to the output folder
         """
@@ -116,7 +116,7 @@ class PrometheusConverter:
         )
 
     @staticmethod
-    def create_latex_files(cv: CV, output_folder: str):
+    def create_latex_files(cv: CV, output_folder: str) -> None:
 
         # Maps the name of the files to create to their content
         files_to_create = {
@@ -138,7 +138,7 @@ class PrometheusConverter:
                 f.write(file_content)
 
     @staticmethod
-    def generate_latex_files(cv: CV, output_folder: str):
+    def generate_latex_files(cv: CV, output_folder: str) -> str:
         """
         Generate the latex files for the cv
         """

@@ -6,31 +6,31 @@ from typing import List
 
 class Latex:
     @staticmethod
-    def bold(text: str):
+    def bold(text: str) -> str:
         return text and f"\\textbf{{{text}}}"
 
     @staticmethod
-    def item(value: str):
+    def item(value: str) -> str:
         return value and f"\\item {value}"
 
     @staticmethod
-    def begin(block_type: str):
+    def begin(block_type: str) -> str:
         return block_type and f"\\begin{{{block_type}}}"
 
     @staticmethod
-    def end(block_type: str):
+    def end(block_type: str) -> str:
         return block_type and f"\\end{{{block_type}}}"
 
     @staticmethod
-    def to_itemize(items: List[str]):
+    def to_itemize(items: List[str]) -> str:
         return "\n".join([Latex.item(item) for item in items if item])
 
     @staticmethod
-    def to_dot_separated_items(items: List[str]):
+    def to_dot_separated_items(items: List[str]) -> str:
         return " $ \\cdot $ ".join([item for item in items if item])
 
     @staticmethod
-    def build_itemize_block(items: List[str]):
+    def build_itemize_block(items: List[str]) -> str:
         filtered = [item for item in items if item]
         if not filtered:
             return ""
@@ -41,16 +41,16 @@ class Latex:
         )
 
     @staticmethod
-    def to_command_args(arguments: List[str]):
+    def to_command_args(arguments: List[str]) -> str:
         return "\n".join([f"{{{arg}}}" for arg in arguments])
 
     @staticmethod
-    def build_command(command: str, arguments: List[str]):
+    def build_command(command: str, arguments: List[str]) -> str:
         args = Latex.to_command_args(arguments)
         return f"\\{command}\n{args}"
 
     @staticmethod
-    def link(url: str, title: str):
+    def link(url: str, title: str) -> str:
 
         if not (url and title):
             raise ValueError("Must provide url and title for link")
@@ -58,7 +58,7 @@ class Latex:
         return f"\\href{{{url}}}{{{title}}}"
 
     @staticmethod
-    def compile_file(filepath: str):
+    def compile_file(filepath: str) -> str:
         path_sans_extension, extension = splitext(filepath)
 
         if extension != ".tex":
