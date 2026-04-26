@@ -9,8 +9,6 @@ from sections.skill import Skill
 from utils.converters import convert_several
 from utils.latex import Latex
 
-from .utils import to_location, to_period, to_with_location
-
 
 class PrometheusConverter:
     """
@@ -30,15 +28,13 @@ class PrometheusConverter:
         """
         Convert the education object to Latex
         """
-        period = to_period(education.start_date, education.end_date)
-        location = to_location(education.city, education.country)
-        school = to_with_location(education.school, location)
+        school = f"{education.school} - {education.location}"
         description = Latex.build_itemize_block(education.description)
         degree = Latex.bold(education.degree)
 
         return PrometheusConverter.build_datedsubsection_cmd(
-            period,
-            location,
+            education.period,
+            education.location,
             school,
             degree,
             description,
@@ -65,14 +61,12 @@ class PrometheusConverter:
         Convert the project object to Latex
         """
         description = Latex.build_itemize_block(project.description)
-        period = to_period(project.start_date, project.end_date)
-        location = to_location(project.city, project.country)
         title = (
             project.link and Latex.link(project.link, project.title) or project.title
         )
 
         return PrometheusConverter.build_datedsubsection_cmd(
-            period, location, project.context, title, description
+            project.period, project.location, project.context, title, description
         )
 
     def convert_experience(experience: Experience):
@@ -80,17 +74,19 @@ class PrometheusConverter:
         Convert the experience object to Latex
         """
         description = Latex.build_itemize_block(experience.description)
-        period = to_period(experience.start_date, experience.end_date)
-        location = to_location(experience.city, experience.country)
         company = (
             experience.company_link
             and Latex.link(experience.company_link, experience.company_name)
             or experience.company_name
         )
-        company = to_with_location(company, location)
+        company = f"{company} - {experience.location}"
 
         return PrometheusConverter.build_datedsubsection_cmd(
-            period, location, company, experience.title, description
+            experience.period,
+            experience.location,
+            company,
+            experience.title,
+            description,
         )
 
     def get_templates_location():
