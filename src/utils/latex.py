@@ -23,9 +23,12 @@ class Latex:
         return " $ \\cdot $ ".join([item for item in items if item])
 
     def build_itemize_block(items: List[str]):
+        filtered = [item for item in items if item]
+        if not filtered:
+            return ""
         return (
             f"{Latex.begin('itemize')}\n"
-            f"{Latex.to_itemize(items)}\n"
+            f"{Latex.to_itemize(filtered)}\n"
             f"{Latex.end('itemize')}"
         )
 
