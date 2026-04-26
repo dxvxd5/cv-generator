@@ -11,7 +11,6 @@ class Experience:
         "country",
         "city",
         "companyName",
-        "companyLink",
         "title",
         "description",
     ]
@@ -24,6 +23,6 @@ class Experience:
         self.city: str = kwargs["city"]
         self.country: str = kwargs["country"]
         self.company_name: str = kwargs["companyName"]
-        self.company_link: str = kwargs["companyLink"]
+        self.company_link: str | None = kwargs.get("companyLink")
         self.title: str = kwargs["title"]
         self.description: List[str] = kwargs["description"]
