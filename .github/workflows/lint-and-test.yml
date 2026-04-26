@@ -2,9 +2,9 @@ name: Lint and Test
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 permissions:
   contents: read
@@ -15,18 +15,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
-    - name: Set up Python (version specified in .python-version)
-      uses: actions/setup-python@v3
+      - name: Set up Python (version specified in .python-version)
+        uses: actions/setup-python@v6
 
-    - name: Install poetry and dependencies
-      run : |
-        pip install poetry
-        poetry install
+      - name: Install poetry and dependencies
+        run: |
+          pip install poetry
+          poetry install
 
-    - name: Lint with Trunk
-      uses: trunk-io/trunk-action@v1
+      - name: Lint with Trunk
+        uses: trunk-io/trunk-action@v1
 
-    - name: Test with pytest
-      run: poetry run pytest
+      - name: Test with pytest
+        run: poetry run pytest
