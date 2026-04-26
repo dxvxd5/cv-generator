@@ -1,9 +1,9 @@
 import json
 import os
+import shutil
 import tempfile
-from distutils import dir_util, file_util
 from io import TextIOWrapper
-from subprocess import CalledProcessError
+from subprocess import CalledProcessError  # nosec B404
 
 import click
 
@@ -73,14 +73,14 @@ def main(input: TextIOWrapper, output: str, template: str):
         success("Compilation succeeded")
 
         info(f"Copying compiled pdf file {pdf_file} to {output_file}")
-        file_util.copy_file(pdf_file, output_file)
+        shutil.copy2(pdf_file, output_file)
         success("File copied")
         failure = False
 
     finally:
         info(f"Cleaning up temporary folder {tmpdir_path}")
         os.umask(prev_umask)
-        dir_util.remove_tree(tmpdir_path)
+        shutil.rmtree(tmpdir_path)
         success("Folder cleaned up")
 
     print()
