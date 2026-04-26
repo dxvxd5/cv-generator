@@ -1,5 +1,6 @@
-import subprocess
+import subprocess  # nosec B404
 from os.path import splitext
+from subprocess import CalledProcessError  # nosec B404
 from typing import List
 
 
@@ -63,11 +64,13 @@ class Latex:
         if extension != ".tex":
             raise ValueError("Must provide a .tex file")
 
-        subprocess.run(
+        result = subprocess.run(  # nosec B603
             ["latexmk", "-pdflua", "-cd", "-file-line-error", filepath],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            check=True,
+            capture_output=True,
+            text=True,
         )
+
+        if result.returncode != 0:
+            raise CalledProcessError(result.returncode, result.args, result.stderr)
 
         return f"{path_sans_extension}.pdf"
