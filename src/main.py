@@ -3,7 +3,7 @@ import os
 import shutil
 import tempfile
 from io import TextIOWrapper
-from subprocess import CalledProcessError
+from subprocess import CalledProcessError  # nosec B404
 
 import click
 

@@ -100,7 +100,11 @@ class PrometheusConverter:
         """
         Copy the template files to the output folder
         """
-        shutil.copytree(PrometheusConverter.get_templates_location(), output_folder, dirs_exist_ok=True)
+        shutil.copytree(
+            PrometheusConverter.get_templates_location(),
+            output_folder,
+            dirs_exist_ok=True,
+        )
 
     def create_latex_files(cv: CV, output_folder: str):
 
