@@ -1,5 +1,4 @@
 import json
-import os
 import shutil
 import tempfile
 from io import TextIOWrapper
@@ -51,7 +50,6 @@ def main(input: TextIOWrapper, output: str, template: str):
     info("Generating temporary folder to work in")
 
     tmpdir_path = tempfile.mkdtemp()
-    prev_umask = os.umask(0o077)
 
     success(f"Temporary folder created at {tmpdir_path}")
 
@@ -79,7 +77,6 @@ def main(input: TextIOWrapper, output: str, template: str):
 
     finally:
         info(f"Cleaning up temporary folder {tmpdir_path}")
-        os.umask(prev_umask)
         shutil.rmtree(tmpdir_path)
         success("Folder cleaned up")
 
