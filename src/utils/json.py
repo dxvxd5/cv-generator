@@ -9,7 +9,7 @@ def load_json(file_path):
 def check_dict(fields, dict_):
 
     for field in fields:
-        if field not in dict_:
-            raise ValueError(f"Field {field} is missing in json file")
+        if field not in dict_ or dict_[field] is None:
+            raise ValueError(f"Field {field} is missing or null in json file")
 
     return True
