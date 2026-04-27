@@ -41,7 +41,7 @@ def test_convert_skills():
     built_latex = PrometheusConverter.convert_skills([skill1, skill2])
     expected_latex = (
         "\\undatedsubsection\n{}\n{Skills}\n{\\textbf{Other technologies: }"
-        "Python $ \\cdot $ Java $ \\cdot $ C# $ \\cdot $ Latex\\\\\n\\textbf"
+        "Python $ \\cdot $ Java $ \\cdot $ C\\# $ \\cdot $ Latex\\\\\n\\textbf"
         "{Tools: }Git $ \\cdot $ ESLint $ \\cdot $ Prettier $ \\cdot $ Figma}"
     )
 
