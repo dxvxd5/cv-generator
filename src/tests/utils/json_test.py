@@ -44,7 +44,7 @@ def expected_education_fields() -> list[str]:
 def test_check_dict_complete(
     expected_education_fields: list[str], complete_education: dict[str, Any]
 ):
-    assert check_dict(expected_education_fields, complete_education)
+    assert check_dict(expected_education_fields, complete_education)  # nosec B101
 
 
 def test_check_dict_imcomplete(

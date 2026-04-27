@@ -24,7 +24,7 @@ def test_convert_education():
         "\\item ML\n\\end{itemize}}"
     )
 
-    assert built_latex == expected_latex
+    assert built_latex == expected_latex  # nosec B101
 
 
 def test_convert_skill():
@@ -32,7 +32,7 @@ def test_convert_skill():
     built_latex = PrometheusConverter.convert_skill(skill)
     expected_latex = "\\textbf{Frontend: }TS $ \\cdot $ CSS"
 
-    assert built_latex == expected_latex
+    assert built_latex == expected_latex  # nosec B101
 
 
 def test_convert_skills():
@@ -41,11 +41,11 @@ def test_convert_skills():
     built_latex = PrometheusConverter.convert_skills([skill1, skill2])
     expected_latex = (
         "\\undatedsubsection\n{}\n{Skills}\n{\\textbf{Other technologies: }"
-        "Python $ \\cdot $ Java $ \\cdot $ C# $ \\cdot $ Latex\\\\\n\\textbf"
+        "Python $ \\cdot $ Java $ \\cdot $ C\\# $ \\cdot $ Latex\\\\\n\\textbf"
         "{Tools: }Git $ \\cdot $ ESLint $ \\cdot $ Prettier $ \\cdot $ Figma}"
     )
 
-    assert built_latex == expected_latex
+    assert built_latex == expected_latex  # nosec B101
 
 
 def test_convert_project_with_link():
@@ -67,7 +67,7 @@ def test_convert_project_with_link():
         "\\item It was very cool\n\\end{itemize}}"
     )
 
-    assert PrometheusConverter.convert_project(project) == expected_latex
+    assert PrometheusConverter.convert_project(project) == expected_latex  # nosec B101
 
 
 def test_convert_project_without_link():
@@ -88,7 +88,7 @@ def test_convert_project_without_link():
         "\\item It was very cool\n\\end{itemize}}"
     )
 
-    assert PrometheusConverter.convert_project(project) == expected_latex
+    assert PrometheusConverter.convert_project(project) == expected_latex  # nosec B101
 
 
 def test_convert_experience():
@@ -109,7 +109,9 @@ def test_convert_experience():
         "\\item Super project\n\\item It was very cool\n\\end{itemize}}"
     )
 
-    assert PrometheusConverter.convert_experience(experience) == expected_latex
+    assert (
+        PrometheusConverter.convert_experience(experience) == expected_latex
+    )  # nosec B101
 
 
 def test_convert_experience_without_link():
@@ -131,4 +133,6 @@ def test_convert_experience_without_link():
         "\\item Super project\n\\item It was very cool\n\\end{itemize}}"
     )
 
-    assert PrometheusConverter.convert_experience(experience) == expected_latex
+    assert (
+        PrometheusConverter.convert_experience(experience) == expected_latex
+    )  # nosec B101

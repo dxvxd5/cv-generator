@@ -31,12 +31,19 @@ from utils.path import change_extension
     type=click.Choice(["prometheus"], case_sensitive=False),
     default="prometheus",
 )
-def main(input: TextIOWrapper, output: str, template: str):
+@click.option(
+    "--escape/--no-escape",
+    default=True,
+    help="Escape special LaTeX characters in the JSON content (default: enabled). "
+    "Use --no-escape if your JSON already contains escaped LaTeX.",
+)
+def main(input: TextIOWrapper, output: str, template: str, escape: bool):
     """
     Convert <json cv> to pdf through Latex
     """
 
     info("Reading input file")
+    Latex.escape_enabled = escape
     converter = get_converter(template)
     cv = CV(**json.load(input))
     output_file = output or change_extension(input.name, ".pdf")
@@ -61,6 +68,8 @@ def main(input: TextIOWrapper, output: str, template: str):
 
     except CalledProcessError as e:
         error("The Latex compilation failed, please try again")
+        if e.output:
+            error(e.output)
         if e.stderr:
             error(e.stderr)
 
