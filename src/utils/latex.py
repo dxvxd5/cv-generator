@@ -5,6 +5,21 @@ from typing import List
 
 
 class Latex:
+    escape_enabled: bool = True
+
+    @staticmethod
+    def escape(text: str) -> str:
+        if not Latex.escape_enabled:
+            return text
+        return (
+            text.replace("#", "\\#")
+            .replace("$", "\\$")
+            .replace("%", "\\%")
+            .replace("&", "\\&")
+            .replace("_", "\\_")
+            .replace("^", "\\^{}")
+        )
+
     @staticmethod
     def bold(text: str) -> str:
         return text and f"\\textbf{{{text}}}"
@@ -23,11 +38,11 @@ class Latex:
 
     @staticmethod
     def to_itemize(items: List[str]) -> str:
-        return "\n".join([Latex.item(item) for item in items if item])
+        return "\n".join([Latex.item(Latex.escape(item)) for item in items if item])
 
     @staticmethod
     def to_dot_separated_items(items: List[str]) -> str:
-        return " $ \\cdot $ ".join([item for item in items if item])
+        return " $ \\cdot $ ".join([Latex.escape(item) for item in items if item])
 
     @staticmethod
     def build_itemize_block(items: List[str]) -> str:
@@ -65,12 +80,21 @@ class Latex:
             raise ValueError("Must provide a .tex file")
 
         result = subprocess.run(  # nosec B603
-            ["latexmk", "-pdflua", "-cd", "-file-line-error", filepath],
+            [
+                "latexmk",
+                "-pdflua",
+                "-cd",
+                "-file-line-error",
+                "-interaction=nonstopmode",
+                filepath,
+            ],
             capture_output=True,
             text=True,
         )
 
         if result.returncode != 0:
-            raise CalledProcessError(result.returncode, result.args, result.stderr)
+            raise CalledProcessError(
+                result.returncode, result.args, result.stdout, result.stderr
+            )
 
         return f"{path_sans_extension}.pdf"
