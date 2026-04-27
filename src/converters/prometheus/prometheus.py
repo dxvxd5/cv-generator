@@ -20,12 +20,12 @@ class PrometheusConverter:
     NO_PERIOD = ""
 
     @staticmethod
-    def build_datedsubsection_cmd(*args) -> str:
-        return Latex.build_command("datedsubsection", args)
+    def build_datedsubsection_cmd(*args: str) -> str:
+        return Latex.build_command("datedsubsection", list(args))
 
     @staticmethod
-    def build_undatedsubsection_cmd(*args) -> str:
-        return Latex.build_command("undatedsubsection", args)
+    def build_undatedsubsection_cmd(*args: str) -> str:
+        return Latex.build_command("undatedsubsection", list(args))
 
     @staticmethod
     def convert_education(education: Education) -> str:

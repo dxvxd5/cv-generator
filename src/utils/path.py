@@ -1,7 +1,7 @@
 import os
 
 
-def change_extension(path, new_extension):
+def change_extension(path: str, new_extension: str) -> str:
     """
     Change the extension of the given path to the given new extension
     """
