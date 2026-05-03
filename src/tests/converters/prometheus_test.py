@@ -3,6 +3,42 @@ from sections.education import Education
 from sections.experience import Experience
 from sections.project import Project
 from sections.skill import Skill
+from sections.user import User
+
+
+def test_convert_user_all_fields():
+    user = User(
+        firstName="John",
+        lastName="Doe",
+        city="London",
+        country="United Kingdom",
+        email="john@example.com",
+        linkedinUrl="https://linkedin.com/in/johndoe",
+        githubUrl="https://github.com/johndoe",
+        githubUsername="johndoe",
+    )
+    result = PrometheusConverter.convert_user(user)
+    assert "John Doe" in result  # nosec B101
+    assert "London, United Kingdom" in result  # nosec B101
+    assert r"\href{mailto:john@example.com}{john@example.com}" in result  # nosec B101
+    assert r"\href{https://linkedin.com/in/johndoe}{John Doe}" in result  # nosec B101
+    assert r"\href{https://github.com/johndoe}{johndoe}" in result  # nosec B101
+
+
+def test_convert_user_no_optional_fields():
+    user = User(
+        firstName="Jane",
+        lastName="Smith",
+        city="Paris",
+        country="France",
+        email="jane@example.com",
+    )
+    result = PrometheusConverter.convert_user(user)
+    assert "Jane Smith" in result  # nosec B101
+    assert "Paris, France" in result  # nosec B101
+    assert r"\href{mailto:jane@example.com}{jane@example.com}" in result  # nosec B101
+    assert r"\faLinkedinIn" not in result  # nosec B101
+    assert r"\faGithub" not in result  # nosec B101
 
 
 def test_convert_education():

@@ -6,6 +6,7 @@ from sections.education import Education
 from sections.experience import Experience
 from sections.project import Project
 from sections.skill import Skill
+from sections.user import User
 from utils.converters import convert_several
 from utils.latex import Latex
 
@@ -26,6 +27,43 @@ class PrometheusConverter:
     @staticmethod
     def build_undatedsubsection_cmd(*args: str) -> str:
         return Latex.build_command("undatedsubsection", list(args))
+
+    @staticmethod
+    def convert_user(user: User) -> str:
+        """
+        Convert the user object to the LaTeX title block
+        """
+        lines = []
+        lines.append(r"\begin{Large}")
+        lines.append(f"\t{user.full_name}")
+        lines.append(r"\end{Large}")
+        lines.append(r"")
+        lines.append(r"\vspace*{0.25em}")
+        lines.append(r"")
+        lines.append(r"\begin{footnotesize}")
+
+        location = f"{user.city}, {user.country}"
+        lines.append(r"\begin{tiny}\faLocationArrow\end{tiny}{" + f" {location}" + r"}")
+
+        lines.append(
+            r"\quad \begin{tiny}\faEnvelope[regular]\end{tiny}~"
+            + Latex.link(f"mailto:{user.email}", user.email)
+        )
+
+        if user.linkedin_url:
+            lines.append(
+                r"\quad \begin{tiny}\faLinkedinIn\end{tiny}~"
+                + Latex.link(user.linkedin_url, user.full_name)
+            )
+
+        if user.github_url and user.github_username:
+            lines.append(
+                r"\quad \begin{tiny}\faGithub\end{tiny}~"
+                + Latex.link(user.github_url, user.github_username)
+            )
+
+        lines.append(r"\end{footnotesize}")
+        return "\n".join(lines)
 
     @staticmethod
     def convert_education(education: Education) -> str:
@@ -99,7 +137,9 @@ class PrometheusConverter:
 
     @staticmethod
     def get_templates_location() -> str:
-        return os.path.join(os.path.dirname(os.path.realpath(__file__)), "templates")
+        return os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), "templates", "prometheus"
+        )
 
     @staticmethod
     def copy_template_files(output_folder: str) -> None:
@@ -115,8 +155,18 @@ class PrometheusConverter:
     @staticmethod
     def create_latex_files(cv: CV, output_folder: str) -> None:
 
+        # Read main.tex template and substitute full name
+        main_tex_path = os.path.join(
+            PrometheusConverter.get_templates_location(), "main.tex"
+        )
+        with open(main_tex_path, "r") as f:
+            main_tex = f.read()
+        main_tex = main_tex.replace("__FULL_NAME__", cv.user.full_name)
+
         # Maps the name of the files to create to their content
         files_to_create = {
+            "main": main_tex,
+            "title": PrometheusConverter.convert_user(cv.user),
             "education": convert_several(
                 PrometheusConverter.convert_education, cv.education
             ),
@@ -139,7 +189,7 @@ class PrometheusConverter:
         """
         Generate the latex files for the cv
         """
-        PrometheusConverter.create_latex_files(cv, output_folder)
         PrometheusConverter.copy_template_files(output_folder)
+        PrometheusConverter.create_latex_files(cv, output_folder)
 
         return os.path.join(output_folder, PrometheusConverter.MAIN_TEX_FILE)
