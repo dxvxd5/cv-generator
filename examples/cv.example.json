@@ -1,0 +1,153 @@
+{
+  "user": {
+    "firstName": "Ada",
+    "lastName": "Lovelace",
+    "city": "London",
+    "country": "United Kingdom",
+    "email": "ada@example.com",
+    "linkedinUrl": "https://www.linkedin.com/in/ada-lovelace",
+    "githubUrl": "https://github.com/adalovelace",
+    "githubUsername": "adalovelace"
+  },
+  "education": [
+    {
+      "startDate": 2018,
+      "endDate": 2020,
+      "city": "Cambridge",
+      "country": "United Kingdom",
+      "school": "University of Cambridge",
+      "degree": "MSc Computer Science",
+      "description": [
+        "Specialised in compilers and programming language theory",
+        "Distinction; thesis on incremental type inference"
+      ]
+    },
+    {
+      "startDate": 2015,
+      "endDate": 2018,
+      "city": "Edinburgh",
+      "country": "United Kingdom",
+      "school": "University of Edinburgh",
+      "degree": "BSc (Hons) Mathematics and Computer Science",
+      "description": [
+        "First Class Honours",
+        "President of the Functional Programming Society"
+      ]
+    },
+    {
+      "startDate": "Sep 2013",
+      "endDate": "Jul 2015",
+      "city": "Paris",
+      "country": "France",
+      "school": "Lycée Henri-IV",
+      "degree": "Classe préparatoire MPSI/MP",
+      "description": [
+        "Two-year intensive preparation in mathematics and physics"
+      ]
+    }
+  ],
+  "experiences": [
+    {
+      "startDate": "Jan 2022",
+      "endDate": "Present",
+      "city": "London",
+      "country": "United Kingdom",
+      "companyName": "Analytical Engines Ltd",
+      "companyLink": "https://example.com",
+      "title": "Senior Software Engineer",
+      "description": [
+        "Led the rewrite of the core scheduling module, improving throughput by 40%",
+        "Designed the migration from a monolith to event-driven services",
+        "Mentored two junior engineers and ran the internal tech-talk series"
+      ]
+    },
+    {
+      "startDate": "Aug 2020",
+      "endDate": "Dec 2021",
+      "city": "Manchester",
+      "country": "United Kingdom",
+      "companyName": "Difference Co",
+      "companyLink": "https://example.com/difference",
+      "title": "Software Engineer",
+      "description": [
+        "Built internal tooling in Python and TypeScript used by 200+ analysts",
+        "Owned the CI/CD pipeline migration to GitHub Actions, cutting build time by 55%",
+        "Introduced contract testing between four downstream services"
+      ]
+    },
+    {
+      "startDate": "Jun 2019",
+      "endDate": "Aug 2019",
+      "city": "Berlin",
+      "country": "Germany",
+      "companyName": "Babbage GmbH",
+      "title": "Software Engineering Intern",
+      "description": [
+        "Implemented a Rust client for the company's streaming API",
+        "Wrote the first end-to-end test suite for the data ingestion pipeline"
+      ]
+    },
+    {
+      "startDate": "Jul 2017",
+      "endDate": "Sep 2017",
+      "city": "Paris",
+      "country": "France",
+      "companyName": "Tabulator SAS",
+      "title": "Research Intern",
+      "description": [
+        "Prototyped a static analyser for SQL queries embedded in Python code",
+        "Co-authored an internal whitepaper on query rewriting"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "startDate": 2023,
+      "endDate": 2024,
+      "city": "Remote",
+      "country": "",
+      "context": "Open source",
+      "title": "cv-generator",
+      "description": [
+        "JSON-driven LaTeX CV generator with pluggable templates",
+        "Powers this very PDF"
+      ],
+      "link": "https://github.com/dxvxd5/cv-generator"
+    },
+    {
+      "startDate": 2022,
+      "endDate": 2023,
+      "city": "London",
+      "country": "United Kingdom",
+      "context": "Hackathon",
+      "title": "Loom",
+      "description": [
+        "Real-time collaborative whiteboard built with CRDTs in Rust + WebAssembly",
+        "Won the 'Best Use of Open Source' award"
+      ],
+      "link": "https://example.com/loom"
+    },
+    {
+      "startDate": 2021,
+      "endDate": 2022,
+      "city": "Remote",
+      "country": "",
+      "context": "Personal",
+      "title": "tinytypes",
+      "description": [
+        "A small dependently-typed language implemented in OCaml for teaching purposes"
+      ],
+      "link": ""
+    }
+  ],
+  "skills": [
+    {
+      "area": "Languages",
+      "skills": ["Python", "TypeScript", "Rust", "Go"]
+    },
+    {
+      "area": "Tools",
+      "skills": ["Git", "Docker", "GitHub Actions", "LaTeX"]
+    }
+  ]
+}
