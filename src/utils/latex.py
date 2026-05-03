@@ -76,10 +76,6 @@ class Latex:
         return f"\\href{{{url}}}{{{title}}}"
 
     @staticmethod
-    def mailto_link(email: str) -> str:
-        return Latex.link(f"mailto:{email}", email)
-
-    @staticmethod
     def fa_icon(name: str, options: str = "") -> str:
         suffix = f"[{options}]" if options else ""
         return f"\\fa{name}{suffix}"
