@@ -29,41 +29,45 @@ class PrometheusConverter:
         return Latex.build_command("undatedsubsection", list(args))
 
     @staticmethod
+    def build_icon_item(icon: str, content: str) -> str:
+        return rf"\quad \begin{{tiny}}{icon}\end{{tiny}}~{content}"
+
+    @staticmethod
     def convert_user(user: User) -> str:
         """
         Convert the user object to the LaTeX title block
         """
-        lines = []
-        lines.append(r"\begin{Large}")
-        lines.append(f"\t{user.full_name}")
-        lines.append(r"\end{Large}")
-        lines.append(r"")
-        lines.append(r"\vspace*{0.25em}")
-        lines.append(r"")
-        lines.append(r"\begin{footnotesize}")
-
-        location = f"{user.city}, {user.country}"
-        lines.append(r"\begin{tiny}\faLocationArrow\end{tiny}{" + f" {location}" + r"}")
-
-        lines.append(
-            r"\quad \begin{tiny}\faEnvelope[regular]\end{tiny}~"
-            + Latex.link(f"mailto:{user.email}", user.email)
+        name_block = f"\\begin{{Large}}\n\t{user.full_name}\n\\end{{Large}}"
+        location_item = (
+            r"\begin{tiny}\faLocationArrow\end{tiny}{ " + user.location + r"}"
+        )
+        email_item = PrometheusConverter.build_icon_item(
+            r"\faEnvelope[regular]", Latex.link(f"mailto:{user.email}", user.email)
         )
 
+        contact_items = [location_item, email_item]
+
         if user.linkedin_url:
-            lines.append(
-                r"\quad \begin{tiny}\faLinkedinIn\end{tiny}~"
-                + Latex.link(user.linkedin_url, user.full_name)
+            contact_items.append(
+                PrometheusConverter.build_icon_item(
+                    r"\faLinkedinIn", Latex.link(user.linkedin_url, user.full_name)
+                )
             )
 
         if user.github_url and user.github_username:
-            lines.append(
-                r"\quad \begin{tiny}\faGithub\end{tiny}~"
-                + Latex.link(user.github_url, user.github_username)
+            contact_items.append(
+                PrometheusConverter.build_icon_item(
+                    r"\faGithub", Latex.link(user.github_url, user.github_username)
+                )
             )
 
-        lines.append(r"\end{footnotesize}")
-        return "\n".join(lines)
+        contact_block = (
+            "\\begin{footnotesize}\n"
+            + "\n".join(contact_items)
+            + "\n\\end{footnotesize}"
+        )
+
+        return f"{name_block}\n\n\\vspace*{{0.25em}}\n\n{contact_block}"
 
     @staticmethod
     def convert_education(education: Education) -> str:
