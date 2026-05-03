@@ -112,13 +112,6 @@ def test_escape(text: str, escaped: str):
     assert Latex.escape(text) == escaped  # nosec B101
 
 
-def test_mailto_link():
-    assert (  # nosec B101
-        Latex.mailto_link("john@example.com")
-        == r"\href{mailto:john@example.com}{john@example.com}"
-    )
-
-
 @pytest.mark.parametrize(
     "name, options, expected",
     [

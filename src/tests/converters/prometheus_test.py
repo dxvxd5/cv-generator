@@ -41,6 +41,36 @@ def test_convert_user_no_optional_fields():
     assert r"\faGithub" not in result  # nosec B101
 
 
+def test_convert_user_escapes_special_characters():
+    user = User(
+        firstName="A&B",
+        lastName="C_D",
+        city="100% City",
+        country="$Country#",
+        email="weird_user@example.com",
+        linkedinUrl="https://linkedin.com/in/a_b",
+        githubUrl="https://github.com/a_b",
+        githubUsername="a_b",
+    )
+    result = PrometheusConverter.convert_user(user)
+
+    # Display text must be escaped
+    assert r"A\&B C\_D" in result  # nosec B101
+    assert r"100\% City, \$Country\#" in result  # nosec B101
+    assert r"{weird\_user@example.com}" in result  # nosec B101
+    assert r"{a\_b}" in result  # nosec B101
+
+    # Raw special characters must NOT leak into the rendered text
+    assert "A&B" not in result  # nosec B101
+    assert "C_D" not in result  # nosec B101
+    assert "100% City" not in result  # nosec B101
+
+    # URLs must remain unescaped (so links still work)
+    assert r"\href{mailto:weird_user@example.com}" in result  # nosec B101
+    assert r"\href{https://linkedin.com/in/a_b}" in result  # nosec B101
+    assert r"\href{https://github.com/a_b}" in result  # nosec B101
+
+
 def test_convert_education():
     education = Education(
         startDate="2020",

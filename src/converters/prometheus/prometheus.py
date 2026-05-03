@@ -45,14 +45,16 @@ class PrometheusConverter:
         """
         Convert the user object to the LaTeX title block
         """
-        name_block = Latex.wrap("Large", f"\t{user.full_name}")
+        full_name = Latex.escape(user.full_name)
+        name_block = Latex.wrap("Large", f"\t{full_name}")
 
         contact_items = [
             PrometheusConverter.build_icon_item(
-                Latex.fa_icon("LocationArrow"), user.location
+                Latex.fa_icon("LocationArrow"), Latex.escape(user.location)
             ),
             PrometheusConverter.build_icon_item(
-                Latex.fa_icon("Envelope", "regular"), Latex.mailto_link(user.email)
+                Latex.fa_icon("Envelope", "regular"),
+                Latex.link(f"mailto:{user.email}", Latex.escape(user.email)),
             ),
         ]
 
@@ -60,7 +62,7 @@ class PrometheusConverter:
             contact_items.append(
                 PrometheusConverter.build_icon_item(
                     Latex.fa_icon("LinkedinIn"),
-                    Latex.link(user.linkedin_url, user.full_name),
+                    Latex.link(user.linkedin_url, full_name),
                 )
             )
 
@@ -68,7 +70,7 @@ class PrometheusConverter:
             contact_items.append(
                 PrometheusConverter.build_icon_item(
                     Latex.fa_icon("Github"),
-                    Latex.link(user.github_url, user.github_username),
+                    Latex.link(user.github_url, Latex.escape(user.github_username)),
                 )
             )
 
@@ -172,7 +174,7 @@ class PrometheusConverter:
         )
         with open(main_tex_path, "r") as f:
             main_tex = f.read()
-        main_tex = main_tex.replace("__FULL_NAME__", cv.user.full_name)
+        main_tex = main_tex.replace("__FULL_NAME__", Latex.escape(cv.user.full_name))
 
         # Maps the name of the files to create to their content
         files_to_create = {
