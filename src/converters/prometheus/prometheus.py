@@ -83,13 +83,14 @@ class PrometheusConverter:
         """
         Convert the education object to Latex
         """
-        school = f"{education.school} - {education.location}"
+        location = Latex.escape(education.location)
+        school = f"{Latex.escape(education.school)} - {location}"
         description = Latex.build_itemize_block(education.description)
-        degree = Latex.bold(education.degree)
+        degree = Latex.bold(Latex.escape(education.degree))
 
         return PrometheusConverter.build_datedsubsection_cmd(
             education.period,
-            education.location,
+            location,
             school,
             degree,
             description,
@@ -101,7 +102,7 @@ class PrometheusConverter:
         Convert the skill object to Latex
         """
         return (
-            f"{Latex.bold(skill.area + ': ' )}"
+            f"{Latex.bold(Latex.escape(skill.area) + ': ' )}"
             f"{Latex.to_dot_separated_items(skill.skills)}"
         )
 
@@ -119,12 +120,17 @@ class PrometheusConverter:
         Convert the project object to Latex
         """
         description = Latex.build_itemize_block(project.description)
+        escaped_title = Latex.escape(project.title)
         title = (
-            project.link and Latex.link(project.link, project.title) or project.title
+            project.link and Latex.link(project.link, escaped_title) or escaped_title
         )
 
         return PrometheusConverter.build_datedsubsection_cmd(
-            project.period, project.location, project.context, title, description
+            project.period,
+            Latex.escape(project.location),
+            Latex.escape(project.context),
+            title,
+            description,
         )
 
     @staticmethod
@@ -133,18 +139,20 @@ class PrometheusConverter:
         Convert the experience object to Latex
         """
         description = Latex.build_itemize_block(experience.description)
+        escaped_company_name = Latex.escape(experience.company_name)
         company = (
             experience.company_link
-            and Latex.link(experience.company_link, experience.company_name)
-            or experience.company_name
+            and Latex.link(experience.company_link, escaped_company_name)
+            or escaped_company_name
         )
-        company = f"{company} - {experience.location}"
+        location = Latex.escape(experience.location)
+        company = f"{company} - {location}"
 
         return PrometheusConverter.build_datedsubsection_cmd(
             experience.period,
-            experience.location,
+            location,
             company,
-            experience.title,
+            Latex.escape(experience.title),
             description,
         )
 

@@ -202,3 +202,98 @@ def test_convert_experience_without_link():
     assert (
         PrometheusConverter.convert_experience(experience) == expected_latex
     )  # nosec B101
+
+
+def test_convert_education_escapes_special_characters():
+    education = Education(
+        startDate=2018,
+        endDate=2020,
+        city="Cambridge",
+        country="A&B",
+        school="Uni_of_Cambridge",
+        degree="BSc Maths & CS",
+        description=["100% effort", "snake_case repos"],
+    )
+    result = PrometheusConverter.convert_education(education)
+
+    assert r"Uni\_of\_Cambridge - Cambridge, A\&B" in result  # nosec B101
+    assert r"\textbf{BSc Maths \& CS}" in result  # nosec B101
+    assert r"\item 100\% effort" in result  # nosec B101
+    assert r"\item snake\_case repos" in result  # nosec B101
+    assert "A&B" not in result  # nosec B101
+
+
+def test_convert_skill_escapes_special_characters():
+    skill = Skill(area="C# & Friends", skills=["Python", "Java"])
+    result = PrometheusConverter.convert_skill(skill)
+
+    assert r"\textbf{C\# \& Friends: }" in result  # nosec B101
+    assert "C# &" not in result  # nosec B101
+
+
+def test_convert_project_escapes_special_characters():
+    project = Project(
+        startDate=2023,
+        endDate=2024,
+        title="Project & Co",
+        city="A_B",
+        country="C#",
+        context="Hack 100% night",
+        description=["Did stuff"],
+        link="https://example.com/x_y",
+    )
+    result = PrometheusConverter.convert_project(project)
+
+    assert r"{A\_B, C\#}" in result  # nosec B101
+    assert r"{Hack 100\% night}" in result  # nosec B101
+    assert r"\href{https://example.com/x_y}{Project \& Co}" in result  # nosec B101
+    assert "Project & Co" not in result  # nosec B101
+
+
+def test_convert_project_without_link_escapes_title():
+    project = Project(
+        startDate=2023,
+        endDate=2024,
+        title="A & B",
+        city="X",
+        country="Y",
+        context="Z",
+        description=["x"],
+        link="",
+    )
+    result = PrometheusConverter.convert_project(project)
+    assert r"{A \& B}" in result  # nosec B101
+
+
+def test_convert_experience_escapes_special_characters():
+    experience = Experience(
+        startDate=2022,
+        endDate=2023,
+        city="A&B",
+        country="C_D",
+        companyName="Foo & Bar Ltd",
+        companyLink="https://example.com/x_y",
+        title="Eng_Lead",
+        description=["100% remote"],
+    )
+    result = PrometheusConverter.convert_experience(experience)
+
+    assert (
+        r"\href{https://example.com/x_y}{Foo \& Bar Ltd} - A\&B, C\_D" in result
+    )  # nosec B101
+    assert r"{Eng\_Lead}" in result  # nosec B101
+    assert "Foo & Bar Ltd" not in result  # nosec B101
+
+
+def test_convert_experience_without_link_escapes_company_name():
+    experience = Experience(
+        startDate=2022,
+        endDate=2023,
+        city="X",
+        country="Y",
+        companyName="A & B",
+        title="T",
+        description=["x"],
+    )
+    result = PrometheusConverter.convert_experience(experience)
+    assert r"{A \& B - X, Y}" in result  # nosec B101
