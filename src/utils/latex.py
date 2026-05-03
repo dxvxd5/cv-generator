@@ -6,6 +6,9 @@ from typing import List
 
 class Latex:
     escape_enabled: bool = True
+    QUAD: str = "\\quad"
+    LINEBREAK: str = "\\\\\n"
+    NBSP: str = "~"
 
     @staticmethod
     def escape(text: str) -> str:
@@ -71,6 +74,28 @@ class Latex:
             raise ValueError("Must provide url and title for link")
 
         return f"\\href{{{url}}}{{{title}}}"
+
+    @staticmethod
+    def mailto_link(email: str) -> str:
+        return Latex.link(f"mailto:{email}", email)
+
+    @staticmethod
+    def fa_icon(name: str, options: str = "") -> str:
+        suffix = f"[{options}]" if options else ""
+        return f"\\fa{name}{suffix}"
+
+    @staticmethod
+    def wrap(block_type: str, content: str) -> str:
+        return f"{Latex.begin(block_type)}\n{content}\n{Latex.end(block_type)}"
+
+    @staticmethod
+    def vspace(amount: str) -> str:
+        return f"\\vspace*{{{amount}}}"
+
+    @staticmethod
+    def stack(blocks: List[str]) -> str:
+        """Join blocks with a blank line between them (LaTeX paragraph break)."""
+        return "\n\n".join(block for block in blocks if block)
 
     @staticmethod
     def compile_file(filepath: str) -> str:

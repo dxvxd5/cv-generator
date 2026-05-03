@@ -19,6 +19,7 @@ class PrometheusConverter:
 
     MAIN_TEX_FILE = "main.tex"
     NO_PERIOD = ""
+    TITLE_VSPACE = "0.25em"
 
     @staticmethod
     def build_datedsubsection_cmd(*args: str) -> str:
@@ -29,45 +30,51 @@ class PrometheusConverter:
         return Latex.build_command("undatedsubsection", list(args))
 
     @staticmethod
+    def build_titleblock_cmd(name_block: str, contact_block: str) -> str:
+        return Latex.stack(
+            [name_block, Latex.vspace(PrometheusConverter.TITLE_VSPACE), contact_block]
+        )
+
+    @staticmethod
     def build_icon_item(icon: str, content: str) -> str:
-        return rf"\quad \begin{{tiny}}{icon}\end{{tiny}}~{content}"
+        tiny_icon = Latex.wrap("tiny", icon)
+        return f"{Latex.QUAD} {tiny_icon}{Latex.NBSP}{content}"
 
     @staticmethod
     def convert_user(user: User) -> str:
         """
         Convert the user object to the LaTeX title block
         """
-        name_block = f"\\begin{{Large}}\n\t{user.full_name}\n\\end{{Large}}"
-        location_item = (
-            r"\begin{tiny}\faLocationArrow\end{tiny}{ " + user.location + r"}"
-        )
-        email_item = PrometheusConverter.build_icon_item(
-            r"\faEnvelope[regular]", Latex.link(f"mailto:{user.email}", user.email)
-        )
+        name_block = Latex.wrap("Large", f"\t{user.full_name}")
 
-        contact_items = [location_item, email_item]
+        contact_items = [
+            PrometheusConverter.build_icon_item(
+                Latex.fa_icon("LocationArrow"), user.location
+            ),
+            PrometheusConverter.build_icon_item(
+                Latex.fa_icon("Envelope", "regular"), Latex.mailto_link(user.email)
+            ),
+        ]
 
         if user.linkedin_url:
             contact_items.append(
                 PrometheusConverter.build_icon_item(
-                    r"\faLinkedinIn", Latex.link(user.linkedin_url, user.full_name)
+                    Latex.fa_icon("LinkedinIn"),
+                    Latex.link(user.linkedin_url, user.full_name),
                 )
             )
 
         if user.github_url and user.github_username:
             contact_items.append(
                 PrometheusConverter.build_icon_item(
-                    r"\faGithub", Latex.link(user.github_url, user.github_username)
+                    Latex.fa_icon("Github"),
+                    Latex.link(user.github_url, user.github_username),
                 )
             )
 
-        contact_block = (
-            "\\begin{footnotesize}\n"
-            + "\n".join(contact_items)
-            + "\n\\end{footnotesize}"
-        )
+        contact_block = Latex.wrap("footnotesize", "\n".join(contact_items))
 
-        return f"{name_block}\n\n\\vspace*{{0.25em}}\n\n{contact_block}"
+        return PrometheusConverter.build_titleblock_cmd(name_block, contact_block)
 
     @staticmethod
     def convert_education(education: Education) -> str:
@@ -101,7 +108,7 @@ class PrometheusConverter:
         return PrometheusConverter.build_undatedsubsection_cmd(
             PrometheusConverter.NO_PERIOD,
             "Skills",
-            "\\\\\n".join(map(PrometheusConverter.convert_skill, skills)),
+            Latex.LINEBREAK.join(map(PrometheusConverter.convert_skill, skills)),
         )
 
     @staticmethod

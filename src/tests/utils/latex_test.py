@@ -110,3 +110,50 @@ def test_link_with_empty_params(url: str, title: str):
 )
 def test_escape(text: str, escaped: str):
     assert Latex.escape(text) == escaped  # nosec B101
+
+
+def test_mailto_link():
+    assert (  # nosec B101
+        Latex.mailto_link("john@example.com")
+        == r"\href{mailto:john@example.com}{john@example.com}"
+    )
+
+
+@pytest.mark.parametrize(
+    "name, options, expected",
+    [
+        ("LinkedinIn", "", r"\faLinkedinIn"),
+        ("Github", "", r"\faGithub"),
+        ("Envelope", "regular", r"\faEnvelope[regular]"),
+    ],
+)
+def test_fa_icon(name: str, options: str, expected: str):
+    assert Latex.fa_icon(name, options) == expected  # nosec B101
+
+
+def test_wrap():
+    assert (  # nosec B101
+        Latex.wrap("itemize", "content") == "\\begin{itemize}\ncontent\n\\end{itemize}"
+    )
+
+
+@pytest.mark.parametrize(
+    "amount, expected",
+    [("0.25em", r"\vspace*{0.25em}"), ("1cm", r"\vspace*{1cm}")],
+)
+def test_vspace(amount: str, expected: str):
+    assert Latex.vspace(amount) == expected  # nosec B101
+
+
+@pytest.mark.parametrize(
+    "blocks, expected",
+    [
+        ([], ""),
+        (["only"], "only"),
+        (["a", "b"], "a\n\nb"),
+        (["a", "", "b"], "a\n\nb"),
+        (["a", "b", "c"], "a\n\nb\n\nc"),
+    ],
+)
+def test_stack(blocks: list[str], expected: str):
+    assert Latex.stack(blocks) == expected  # nosec B101

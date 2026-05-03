@@ -1,0 +1,148 @@
+{
+  "user": {
+    "firstName": "David",
+    "lastName": "Kragbé",
+    "city": "London",
+    "country": "United Kingdom",
+    "email": "davidkragbe@outlook.com",
+    "linkedinUrl": "https://www.linkedin.com/in/david-kragb%C3%A9-791199165",
+    "githubUrl": "https://github.com/dxvxd5",
+    "githubUsername": "dxvxd5"
+  },
+  "experiences": [
+    {
+      "title": "Web Engineer",
+      "companyName": "Monzo Bank",
+      "companyLink": "https://monzo.com",
+      "startDate": "March 2025",
+      "endDate": "Now",
+      "city": "London",
+      "country": "United Kingdom",
+      "description": [
+        "Enable marketing teams to launch campaigns independently by building tested, accessible, and SEO-friendly components featuring Monzo content, integrated with our CMS.",
+        "Led the end-to-end development of a new video component to enhance website visuals and support marketing initiatives, collaborating closely with stakeholders to align on requirements and objectives.",
+        "Focus on engineering for internationalisation to support Monzo's expansion into new countries.",
+        "Provide technical support for high-impact marketing initiatives."
+      ]
+    },
+    {
+      "title": "Full Stack Engineer",
+      "companyName": "Spotify",
+      "companyLink": "https://spotify.com",
+      "startDate": "December 2022",
+      "endDate": "January 2025",
+      "city": "London",
+      "country": "United Kingdom",
+      "description": [
+        "Developed internal web applications and backend services that enabled marketing teams to create and launch global promotional campaigns efficiently.",
+        "Designed and implemented dashboards and visualization tools using Figma, ReactJS, TypeScript, Visx, and GraphQL to provide actionable campaign insights.",
+        "Implemented backend features in Java to improve system performance, reliability, and functionality.",
+        "Ensured high-quality production code through comprehensive testing with Jest, React Testing Library, and JUnit."
+      ]
+    },
+    {
+      "title": "Frontend Developer Intern",
+      "companyName": "Spotify",
+      "companyLink": "https://spotify.com",
+      "startDate": "June 2022",
+      "endDate": "September 2022",
+      "city": "Paris",
+      "country": "France",
+      "description": [
+        "Designed and implemented an internal web application featuring a metrics dashboard, allowing teams to monitor how their features impact the Spotify mobile application bundle size.",
+        "Built reusable ReactJS components with TypeScript, focusing on readability, maintainability, and responsiveness.",
+        "Ensured component robustness and quality through comprehensive testing with Jest and React Testing Library."
+      ]
+    },
+    {
+      "title": "Data Scientist Intern",
+      "companyName": "Shift Technology",
+      "companyLink": "https://shift-technology.com",
+      "startDate": "November 2021",
+      "endDate": "May 2022",
+      "city": "Paris",
+      "country": "France",
+      "description": [
+        "Created tools and features to help insurance companies improve their fraud detection and claims automation processes.",
+        "Developed a production-ready Python module for automated document analysis using machine learning and computer vision techniques.",
+        "Created Python scripts to extract key insights from data to support decision-making.",
+        "Integrated client feedback into product updates and implemented backend features in C#."
+      ]
+    },
+    {
+      "title": "Full Stack Developer",
+      "companyName": "Titan Aviation",
+      "startDate": "January 2020",
+      "endDate": "July 2020",
+      "city": "Valence",
+      "country": "France",
+      "description": [
+        "Built a full-stack web application for the management of vehicle fleets, contributing to extending Titan Aviation's product range and increasing its competitive advantage.",
+        "Designed and implemented the database schema with MySQL and the backend REST API with Django and Django Rest Framework.",
+        "Created dashboards and visualization tools for fleet management with a responsive interface using CSS3 and Bootstrap.",
+        "Implemented backend features with Python and Django to improve performance and integration, and hosted the application on Azure.",
+        "Led a team of four engineers by organizing daily stand-ups and delegating tasks."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Master of Science in Engineering - Double Degree Program",
+      "school": "KTH Royal Institute of Technology",
+      "startDate": 2020,
+      "endDate": 2022,
+      "city": "Stockholm",
+      "country": "Sweden",
+      "description": [
+        "Major: Machine Learning and Artificial Intelligence",
+        "Minor: Interaction Programming (Frontend Development) and Information Retrieval"
+      ]
+    },
+    {
+      "degree": "Master of Computer Science, Cybersecurity, Networks",
+      "school": "Grenoble INP Esisar",
+      "startDate": 2018,
+      "endDate": 2022,
+      "city": "Valence",
+      "country": "France",
+      "description": [
+        "Major: Computer Science and Networks",
+        "Minor: Cybersecurity"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "area": "Web Development",
+      "skills": [
+        "TypeScript",
+        "JavaScript (ES6)",
+        "ReactJS",
+        "Jest",
+        "React Testing Library",
+        "REST APIs",
+        "NodeJS",
+        "CSS3",
+        "Accessibility Best Practices"
+      ]
+    },
+    {
+      "area": "Other Technologies",
+      "skills": [
+        "Python",
+        "C#",
+        "Java",
+        "GraphQL",
+        "Docker",
+        "Azure",
+        "AWS",
+        "Heroku"
+      ]
+    },
+    {
+      "area": "Tools",
+      "skills": ["Git", "Figma", "ESLint", "Prettier"]
+    }
+  ],
+  "projects": []
+}
