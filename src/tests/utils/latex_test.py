@@ -150,3 +150,34 @@ def test_vspace(amount: str, expected: str):
 )
 def test_stack(blocks: list[str], expected: str):
     assert Latex.stack(blocks) == expected  # nosec B101
+
+
+def test_bold_escapes():
+    assert Latex.bold("C# & friends") == r"\textbf{C\# \& friends}"  # nosec B101
+
+
+def test_item_escapes():
+    assert Latex.item("snake_case") == r"\item snake\_case"  # nosec B101
+
+
+def test_link_escapes_title_only():
+    # URL stays raw (so the link works), title is escaped
+    assert (  # nosec B101
+        Latex.link("https://example.com/x_y", "A & B")
+        == r"\href{https://example.com/x_y}{A \& B}"
+    )
+
+
+@pytest.mark.parametrize(
+    "parts, sep, expected",
+    [
+        ([], " - ", ""),
+        (["a"], " - ", "a"),
+        (["a", "b"], " - ", "a - b"),
+        (["a", "", "b"], " - ", "a - b"),
+        (["A & B", "100% C"], " - ", r"A \& B - 100\% C"),
+        (["x_y", "z#"], ", ", r"x\_y, z\#"),
+    ],
+)
+def test_join(parts: list[str], sep: str, expected: str):
+    assert Latex.join(parts, sep) == expected  # nosec B101

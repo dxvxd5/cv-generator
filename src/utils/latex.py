@@ -5,6 +5,28 @@ from typing import List
 
 
 class Latex:
+    """
+    LaTeX building helpers.
+
+    Escaping convention
+    -------------------
+    These helpers escape every user-facing display string they receive.
+    Converters should hand raw strings straight to ``Latex.*`` and never
+    interpolate user data into f-strings themselves.
+
+    - **Display args** (``text``, ``value``, ``title``, ``items``,
+      ``parts``): treated as raw user input and escaped automatically.
+    - **Already-built LaTeX** (``content`` in :meth:`wrap`, ``blocks``
+      in :meth:`stack`, ``arguments`` in :meth:`build_command` and
+      :meth:`to_command_args`): passed through verbatim. Do **not**
+      escape here or you will double-escape composed expressions.
+    - **Structural identifiers** (``url``, ``block_type``, ``command``,
+      ``name``): never escaped.
+
+    To compose multiple raw user strings with a literal separator, use
+    :meth:`join` rather than an f-string.
+    """
+
     escape_enabled: bool = True
     QUAD: str = "\\quad"
     LINEBREAK: str = "\\\\\n"
@@ -24,12 +46,21 @@ class Latex:
         )
 
     @staticmethod
+    def join(parts: List[str], sep: str) -> str:
+        """Escape each part and join with the (raw) separator.
+
+        Use this instead of f-strings when concatenating user-provided
+        strings, e.g. ``Latex.join([city, country], ", ")``.
+        """
+        return sep.join(Latex.escape(part) for part in parts if part)
+
+    @staticmethod
     def bold(text: str) -> str:
-        return text and f"\\textbf{{{text}}}"
+        return text and f"\\textbf{{{Latex.escape(text)}}}"
 
     @staticmethod
     def item(value: str) -> str:
-        return value and f"\\item {value}"
+        return value and f"\\item {Latex.escape(value)}"
 
     @staticmethod
     def begin(block_type: str) -> str:
@@ -41,7 +72,7 @@ class Latex:
 
     @staticmethod
     def to_itemize(items: List[str]) -> str:
-        return "\n".join([Latex.item(Latex.escape(item)) for item in items if item])
+        return "\n".join([Latex.item(item) for item in items if item])
 
     @staticmethod
     def to_dot_separated_items(items: List[str]) -> str:
@@ -73,7 +104,7 @@ class Latex:
         if not (url and title):
             raise ValueError("Must provide url and title for link")
 
-        return f"\\href{{{url}}}{{{title}}}"
+        return f"\\href{{{url}}}{{{Latex.escape(title)}}}"
 
     @staticmethod
     def fa_icon(name: str, options: str = "") -> str:

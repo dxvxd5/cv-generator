@@ -45,8 +45,7 @@ class PrometheusConverter:
         """
         Convert the user object to the LaTeX title block
         """
-        full_name = Latex.escape(user.full_name)
-        name_block = Latex.wrap("Large", f"\t{full_name}")
+        name_block = Latex.wrap("Large", f"\t{Latex.escape(user.full_name)}")
 
         contact_items = [
             PrometheusConverter.build_icon_item(
@@ -54,7 +53,7 @@ class PrometheusConverter:
             ),
             PrometheusConverter.build_icon_item(
                 Latex.fa_icon("Envelope", "regular"),
-                Latex.link(f"mailto:{user.email}", Latex.escape(user.email)),
+                Latex.link(f"mailto:{user.email}", user.email),
             ),
         ]
 
@@ -62,7 +61,7 @@ class PrometheusConverter:
             contact_items.append(
                 PrometheusConverter.build_icon_item(
                     Latex.fa_icon("LinkedinIn"),
-                    Latex.link(user.linkedin_url, full_name),
+                    Latex.link(user.linkedin_url, user.full_name),
                 )
             )
 
@@ -70,7 +69,7 @@ class PrometheusConverter:
             contact_items.append(
                 PrometheusConverter.build_icon_item(
                     Latex.fa_icon("Github"),
-                    Latex.link(user.github_url, Latex.escape(user.github_username)),
+                    Latex.link(user.github_url, user.github_username),
                 )
             )
 
@@ -83,16 +82,14 @@ class PrometheusConverter:
         """
         Convert the education object to Latex
         """
-        location = Latex.escape(education.location)
-        school = f"{Latex.escape(education.school)} - {location}"
+        school = Latex.join([education.school, education.location], " - ")
         description = Latex.build_itemize_block(education.description)
-        degree = Latex.bold(Latex.escape(education.degree))
 
         return PrometheusConverter.build_datedsubsection_cmd(
             education.period,
-            location,
+            Latex.escape(education.location),
             school,
-            degree,
+            Latex.bold(education.degree),
             description,
         )
 
@@ -102,7 +99,7 @@ class PrometheusConverter:
         Convert the skill object to Latex
         """
         return (
-            f"{Latex.bold(Latex.escape(skill.area) + ': ' )}"
+            f"{Latex.bold(skill.area + ': ' )}"
             f"{Latex.to_dot_separated_items(skill.skills)}"
         )
 
@@ -120,9 +117,10 @@ class PrometheusConverter:
         Convert the project object to Latex
         """
         description = Latex.build_itemize_block(project.description)
-        escaped_title = Latex.escape(project.title)
         title = (
-            project.link and Latex.link(project.link, escaped_title) or escaped_title
+            Latex.link(project.link, project.title)
+            if project.link
+            else Latex.escape(project.title)
         )
 
         return PrometheusConverter.build_datedsubsection_cmd(
@@ -139,14 +137,13 @@ class PrometheusConverter:
         Convert the experience object to Latex
         """
         description = Latex.build_itemize_block(experience.description)
-        escaped_company_name = Latex.escape(experience.company_name)
-        company = (
-            experience.company_link
-            and Latex.link(experience.company_link, escaped_company_name)
-            or escaped_company_name
+        company_part = (
+            Latex.link(experience.company_link, experience.company_name)
+            if experience.company_link
+            else Latex.escape(experience.company_name)
         )
         location = Latex.escape(experience.location)
-        company = f"{company} - {location}"
+        company = f"{company_part} - {location}"
 
         return PrometheusConverter.build_datedsubsection_cmd(
             experience.period,
