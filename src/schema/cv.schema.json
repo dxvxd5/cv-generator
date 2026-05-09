@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dxvxd5/cv-generator/schema/cv.schema.json",
+  "title": "CV",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["user", "education", "experiences", "projects", "skills"],
+  "properties": {
+    "user": { "$ref": "#/$defs/user" },
+    "education": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/education" }
+    },
+    "experiences": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/experience" }
+    },
+    "projects": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/project" }
+    },
+    "skills": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/skill" }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dateLike": {
+      "anyOf": [{ "type": "string", "minLength": 1 }, { "type": "integer" }]
+    },
+    "stringList": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["firstName", "lastName", "city", "country", "email"],
+      "properties": {
+        "firstName": { "$ref": "#/$defs/nonEmptyString" },
+        "lastName": { "$ref": "#/$defs/nonEmptyString" },
+        "city": { "$ref": "#/$defs/nonEmptyString" },
+        "country": { "$ref": "#/$defs/nonEmptyString" },
+        "email": { "type": "string", "format": "email", "minLength": 1 },
+        "linkedinUrl": { "type": "string" },
+        "githubUrl": { "type": "string" },
+        "githubUsername": { "type": "string" }
+      }
+    },
+    "education": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startDate",
+        "endDate",
+        "city",
+        "country",
+        "school",
+        "degree",
+        "description"
+      ],
+      "properties": {
+        "startDate": { "$ref": "#/$defs/dateLike" },
+        "endDate": { "$ref": "#/$defs/dateLike" },
+        "city": { "$ref": "#/$defs/nonEmptyString" },
+        "country": { "type": "string" },
+        "school": { "$ref": "#/$defs/nonEmptyString" },
+        "degree": { "$ref": "#/$defs/nonEmptyString" },
+        "description": { "$ref": "#/$defs/stringList" }
+      }
+    },
+    "experience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startDate",
+        "endDate",
+        "city",
+        "country",
+        "companyName",
+        "title",
+        "description"
+      ],
+      "properties": {
+        "startDate": { "$ref": "#/$defs/dateLike" },
+        "endDate": { "$ref": "#/$defs/dateLike" },
+        "city": { "$ref": "#/$defs/nonEmptyString" },
+        "country": { "type": "string" },
+        "companyName": { "$ref": "#/$defs/nonEmptyString" },
+        "companyLink": { "type": "string" },
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "description": { "$ref": "#/$defs/stringList" }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startDate",
+        "endDate",
+        "city",
+        "country",
+        "context",
+        "title",
+        "description",
+        "link"
+      ],
+      "properties": {
+        "startDate": { "$ref": "#/$defs/dateLike" },
+        "endDate": { "$ref": "#/$defs/dateLike" },
+        "city": { "$ref": "#/$defs/nonEmptyString" },
+        "country": { "type": "string" },
+        "context": { "type": "string" },
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "description": { "$ref": "#/$defs/stringList" },
+        "link": { "type": "string" }
+      }
+    },
+    "skill": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["area", "skills"],
+      "properties": {
+        "area": { "$ref": "#/$defs/nonEmptyString" },
+        "skills": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}
