@@ -1,18 +1,5 @@
-from utils.json import check_dict
-
-
 class User:
-    required_fields = [
-        "city",
-        "country",
-        "firstName",
-        "lastName",
-        "email",
-    ]
-
     def __init__(self, **kwargs):
-        check_dict(self.required_fields, kwargs)
-
         self.city: str = kwargs["city"]
         self.country: str = kwargs["country"]
         self.first_name: str = kwargs["firstName"]

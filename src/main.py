@@ -8,6 +8,7 @@ import click
 
 from sections.cv import CV
 from utils.cli import error, get_converter, info, success
+from utils.json import validate_cv
 from utils.latex import Latex
 from utils.path import change_extension
 
@@ -45,7 +46,13 @@ def main(input: TextIOWrapper, output: str, template: str, escape: bool):
     info("Reading input file")
     Latex.escape_enabled = escape
     converter = get_converter(template)
-    cv = CV(**json.load(input))
+    raw_cv = json.load(input)
+    try:
+        validate_cv(raw_cv)
+    except ValueError as e:
+        error(str(e))
+        return
+    cv = CV(**raw_cv)
     output_file = output or change_extension(input.name, ".pdf")
     success(f"Input file read: {input.name}")
 
