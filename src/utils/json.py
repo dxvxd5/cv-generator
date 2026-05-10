@@ -38,6 +38,18 @@ def _format_error_path(error) -> str:
     return "".join(parts)
 
 
+def _format_error_message(error) -> str:
+    # The schema's top-level ``anyOf`` enforces "at least one non-empty list
+    # section among education/experiences/projects". The default jsonschema
+    # message dumps the entire input and says "not valid under any of the
+    # given schemas", which is unhelpful — rewrite it.
+    if error.validator == "anyOf" and not list(error.absolute_path):
+        return (
+            "provide at least one entry in 'education', " "'experiences' or 'projects'"
+        )
+    return error.message
+
+
 def validate_cv(data: Any) -> None:
     """Validate ``data`` against the CV JSON schema.
 
@@ -50,6 +62,7 @@ def validate_cv(data: Any) -> None:
     if not errors:
         return
     formatted = "\n".join(
-        f"  - {_format_error_path(error)}: {error.message}" for error in errors
+        f"  - {_format_error_path(error)}: {_format_error_message(error)}"
+        for error in errors
     )
     raise ValueError(f"Invalid CV JSON:\n{formatted}")
