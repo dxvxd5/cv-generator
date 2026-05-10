@@ -50,12 +50,14 @@ The input is validated against [src/schema/cv.schema.json](src/schema/cv.schema.
 ```jsonc
 {
   "user":        { ... },           // required
-  "education":   [ { ... }, ... ],  // required (may be empty)
-  "experiences": [ { ... }, ... ],  // required (may be empty)
-  "projects":    [ { ... }, ... ],  // required (may be empty)
-  "skills":      [ { ... }, ... ]   // required (may be empty)
+  "education":   [ { ... }, ... ],  // optional; omit or pass [] to hide the section
+  "experiences": [ { ... }, ... ],  // optional; omit or pass [] to hide the section
+  "projects":    [ { ... }, ... ],  // optional; omit or pass [] to hide the section
+  "skills":      [ { ... }, ... ]   // optional; omit or pass [] to hide the section
 }
 ```
+
+`user` is required, and at least one of `education`, `experiences` or `projects` must contain at least one entry. Any section that is omitted (or empty) is skipped entirely — no heading is rendered for it.
 
 See [examples/cv.example.json](examples/cv.example.json) for a complete, working example.
 

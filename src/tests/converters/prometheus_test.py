@@ -297,3 +297,30 @@ def test_convert_experience_without_link_escapes_company_name():
     )
     result = PrometheusConverter.convert_experience(experience)
     assert r"{A \& B - X, Y}" in result  # nosec B101
+
+
+def test_create_latex_files_omits_section_blocks_for_empty_sections(tmp_path):
+    from sections.cv import CV
+
+    cv = CV(
+        user={
+            "firstName": "Ada",
+            "lastName": "Lovelace",
+            "city": "London",
+            "country": "United Kingdom",
+            "email": "ada@example.com",
+        },
+        skills=[{"area": "Languages", "skills": ["Python"]}],
+    )
+    PrometheusConverter.create_latex_files(cv, str(tmp_path))
+
+    main_tex = (tmp_path / "main.tex").read_text()
+    assert r"\section{Skills}" in main_tex  # nosec B101
+    assert r"\input{skills.tex}" in main_tex  # nosec B101
+    for absent in ("Professional Experiences", "Projects", "Education"):
+        assert absent not in main_tex  # nosec B101
+
+    assert (tmp_path / "title.tex").exists()  # nosec B101
+    assert (tmp_path / "skills.tex").exists()  # nosec B101
+    for absent_file in ("experiences.tex", "projects.tex", "education.tex"):
+        assert not (tmp_path / absent_file).exists()  # nosec B101

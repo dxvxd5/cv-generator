@@ -21,6 +21,19 @@ class PrometheusConverter:
     NO_PERIOD = ""
     TITLE_VSPACE = "0.25em"
 
+    # (output file stem, section heading, CV attribute name, converter method name)
+    # Order matches the original main.tex layout.
+    LIST_SECTIONS = (
+        (
+            "experiences",
+            "Professional Experiences",
+            "experiences",
+            "convert_experience",
+        ),
+        ("projects", "Projects", "projects", "convert_project"),
+        ("education", "Education", "education", "convert_education"),
+    )
+
     @staticmethod
     def build_datedsubsection_cmd(*args: str) -> str:
         return Latex.build_command("datedsubsection", list(args))
@@ -181,21 +194,27 @@ class PrometheusConverter:
             main_tex = f.read()
         main_tex = main_tex.replace("__FULL_NAME__", Latex.escape(cv.user.full_name))
 
-        # Maps the name of the files to create to their content
+        # Title is always emitted (user is required).
         files_to_create = {
-            "main": main_tex,
             "title": PrometheusConverter.convert_user(cv.user),
-            "education": convert_several(
-                PrometheusConverter.convert_education, cv.education
-            ),
-            "experiences": convert_several(
-                PrometheusConverter.convert_experience, cv.experiences
-            ),
-            "projects": convert_several(
-                PrometheusConverter.convert_project, cv.projects
-            ),
-            "skills": PrometheusConverter.convert_skills(cv.skills),
         }
+
+        section_blocks: list[str] = []
+        for file_name, title, attr, converter_name in PrometheusConverter.LIST_SECTIONS:
+            items = getattr(cv, attr)
+            if not items:
+                continue
+            item_converter = getattr(PrometheusConverter, converter_name)
+            files_to_create[file_name] = convert_several(item_converter, items)
+            section_blocks.append(f"\\section{{{title}}}\n\\input{{{file_name}.tex}}")
+
+        if cv.skills:
+            files_to_create["skills"] = PrometheusConverter.convert_skills(cv.skills)
+            section_blocks.append("\\section{Skills}\n\\input{skills.tex}")
+
+        files_to_create["main"] = main_tex.replace(
+            "__SECTIONS__", "\n\n".join(section_blocks)
+        )
 
         for file_name, file_content in files_to_create.items():
             file_path = os.path.join(output_folder, f"{file_name}.tex")

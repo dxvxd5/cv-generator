@@ -13,15 +13,17 @@ class CV:
         self.user: User = User(**kwargs["user"])
 
         self.education: List[Education] = [
-            Education(**edu) for edu in kwargs["education"]
+            Education(**edu) for edu in kwargs.get("education", [])
         ]
 
         self.experiences: List[Experience] = [
-            Experience(**experience) for experience in kwargs["experiences"]
+            Experience(**experience) for experience in kwargs.get("experiences", [])
         ]
 
-        self.skills: List[Skill] = [Skill(**skill) for skill in kwargs["skills"]]
+        self.skills: List[Skill] = [
+            Skill(**skill) for skill in kwargs.get("skills", [])
+        ]
 
         self.projects: List[Project] = [
-            Project(**project) for project in kwargs["projects"]
+            Project(**project) for project in kwargs.get("projects", [])
         ]

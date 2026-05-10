@@ -4,7 +4,21 @@
   "title": "CV",
   "type": "object",
   "additionalProperties": false,
-  "required": ["user", "education", "experiences", "projects", "skills"],
+  "required": ["user"],
+  "anyOf": [
+    {
+      "required": ["education"],
+      "properties": { "education": { "minItems": 1 } }
+    },
+    {
+      "required": ["experiences"],
+      "properties": { "experiences": { "minItems": 1 } }
+    },
+    {
+      "required": ["projects"],
+      "properties": { "projects": { "minItems": 1 } }
+    }
+  ],
   "properties": {
     "user": { "$ref": "#/$defs/user" },
     "education": {
