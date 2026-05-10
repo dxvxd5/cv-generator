@@ -6,6 +6,7 @@ from subprocess import CalledProcessError  # nosec B404
 
 import click
 
+from converters import CONVERTERS
 from sections.cv import CV
 from utils.cli import error, get_converter, info, success
 from utils.json import validate_cv
@@ -29,8 +30,9 @@ from utils.path import change_extension
 @click.option(
     "-t",
     "--template",
-    type=click.Choice(["prometheus"], case_sensitive=False),
+    type=click.Choice(sorted(CONVERTERS), case_sensitive=False),
     default="prometheus",
+    show_default=True,
 )
 @click.option(
     "--escape/--no-escape",

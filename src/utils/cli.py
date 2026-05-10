@@ -2,15 +2,15 @@ import enum
 
 import click
 
-from converters.prometheus.prometheus import PrometheusConverter
+from converters import CONVERTERS
 
 MSG_TYPE = enum.Enum("MSG_TYPE", "INFO SUCCESS ERROR")
 
 
 def get_converter(template: str):
-    if template == "prometheus":
-        return PrometheusConverter
-    else:
+    try:
+        return CONVERTERS[template]
+    except KeyError:
         raise ValueError(f"Unknown template: {template}")
 
 
