@@ -40,7 +40,7 @@ Options:
 | Flag             | Description                                                                                                 |
 | ---------------- | ----------------------------------------------------------------------------------------------------------- |
 | `-o, --output`   | Path to the generated PDF. Defaults to the input path with a `.pdf` extension.                              |
-| `-t, --template` | Template to use. Currently only `prometheus`.                                                               |
+| `-t, --template` | Template to use. Defaults to `prometheus`. See [Adding a template](#adding-a-template).                     |
 | `--no-escape`    | Skip escaping LaTeX special characters in the input (use only if your JSON already contains escaped LaTeX). |
 
 ## JSON schema
@@ -88,6 +88,36 @@ Required: `startDate`, `endDate`, `city`, `country`, `context`, `title`, `descri
 ### `skills[]`
 
 Required: `area` (e.g. `"Languages"`), `skills` (list of strings).
+
+## Adding a template
+
+Templates are auto-discovered from `src/converters/`. To add one named `mytheme`:
+
+1. Create `src/converters/mytheme/` with your converter class and any LaTeX assets it needs (e.g. `templates/mytheme/main.tex`, `.cls` files).
+2. Implement a converter class. The only contract required by the CLI is a single method:
+
+   ```python
+   class MyThemeConverter:
+       @staticmethod
+       def generate_latex_files(cv: CV, output_folder: str) -> str:
+           """
+           Render `cv` into LaTeX files under `output_folder` and return the
+           absolute path of the main `.tex` file to compile.
+           """
+           ...
+   ```
+
+   `cv` is a [`CV`](src/sections/cv.py) instance exposing `user`, `education`, `experiences`, `projects`, `skills`. Use the [`Latex`](src/utils/latex.py) helpers (`escape`, `join`, `bold`, `link`, `build_command`, …) so escaping stays consistent — pass raw strings in and let the helpers escape display content. See [src/converters/prometheus/prometheus.py](src/converters/prometheus/prometheus.py) for a full example.
+
+3. Expose the converter in `src/converters/mytheme/__init__.py`:
+
+   ```python
+   from converters.mytheme.mytheme import MyThemeConverter
+
+   CONVERTER = MyThemeConverter
+   ```
+
+4. Run with `--template mytheme`. The CLI's `--template` choices are derived from the registry, so no other code changes are required.
 
 ## Tests
 
