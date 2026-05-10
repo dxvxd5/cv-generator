@@ -45,7 +45,7 @@ Options:
 
 ## JSON schema
 
-The input file must be a JSON object with the following top-level sections:
+The input is validated against [src/schema/cv.schema.json](src/schema/cv.schema.json) before any LaTeX is generated. Any structural issues (missing fields, wrong types, unknown keys) are reported up front with their JSON path. The input file must be a JSON object with the following top-level sections:
 
 ```jsonc
 {
