@@ -11,7 +11,7 @@ def get_converter(template: str):
     try:
         return CONVERTERS[template]
     except KeyError:
-        raise ValueError(f"Unknown template: {template}")
+        raise ValueError(f"Unknown template: {template}") from None
 
 
 def info(msg: str):
