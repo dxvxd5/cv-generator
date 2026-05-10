@@ -324,3 +324,56 @@ def test_create_latex_files_omits_section_blocks_for_empty_sections(tmp_path):
     assert (tmp_path / "skills.tex").exists()  # nosec B101
     for absent_file in ("experiences.tex", "projects.tex", "education.tex"):
         assert not (tmp_path / absent_file).exists()  # nosec B101
+
+
+def test_convert_skill_escapes_special_characters_in_skill_items():
+    skill = Skill(area="Languages", skills=["C++ & Rust", "C#", "100% TS"])
+    result = PrometheusConverter.convert_skill(skill)
+
+    assert r"C++ \& Rust" in result  # nosec B101
+    assert r"C\#" in result  # nosec B101
+    assert r"100\% TS" in result  # nosec B101
+    assert "C++ & Rust" not in result  # nosec B101
+
+
+def test_convert_user_hides_github_when_only_url_is_set():
+    user = User(
+        firstName="A",
+        lastName="B",
+        city="X",
+        country="Y",
+        email="a@b.c",
+        githubUrl="https://github.com/ab",
+    )
+    result = PrometheusConverter.convert_user(user)
+    assert r"\faGithub" not in result  # nosec B101
+    assert "https://github.com/ab" not in result  # nosec B101
+
+
+def test_convert_user_hides_github_when_only_username_is_set():
+    user = User(
+        firstName="A",
+        lastName="B",
+        city="X",
+        country="Y",
+        email="a@b.c",
+        githubUsername="ab",
+    )
+    result = PrometheusConverter.convert_user(user)
+    assert r"\faGithub" not in result  # nosec B101
+
+
+def test_convert_education_with_empty_description_omits_itemize_block():
+    education = Education(
+        startDate="2020",
+        endDate="2022",
+        city="Stockholm",
+        country="Sweden",
+        school="KTH",
+        degree="Master",
+        description=[],
+    )
+    result = PrometheusConverter.convert_education(education)
+    assert r"\begin{itemize}" not in result  # nosec B101
+    assert r"\end{itemize}" not in result  # nosec B101
+    assert r"\textbf{Master}" in result  # nosec B101
